@@ -1,13 +1,27 @@
-<!DOCTYPE
-
-<html lang=
-
-<
-
-<meta charset="UT
-
-ent="width=device-width, initial-scale=
-
-<title>BTS Game</t
-
-legram.org/js/telegram-web-app.js"></sc
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BTS Game</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+</head>
+<body style="text-align:center; font-family:sans-serif; background:#667eea; color:white; padding:30px; min-height:100vh;">
+    <h1>اجمع عملات BTS 💜</h1>
+    <img src="https://i.imgur.com/4M34hi2.png" width="150" style="border-radius:50%; border:4px solid white; margin:20px 0;">
+    <div id="coins" style="font-size:50px; font-weight:bold; margin:20px 0;">0</div>
+    <button onclick="addCoins()" style="padding:20px 40px; font-size:24px; background:#ff3e9d; color:white; border:none; border-radius:50px; cursor:pointer;">اجمع +10</button>
+    <p style="margin-top:15px; opacity:0.9;">+10 عملات لكل ضغطة</p>
+    
+    <script>
+        let tg = window.Telegram.WebApp;
+        tg.expand();
+        let coins = 0;
+        function addCoins() {
+            coins += 10;
+            document.getElementById('coins').innerText = coins;
+            tg.HapticFeedback.impactOccurred('light');
+        }
+    </script>
+</body>
+</html>
