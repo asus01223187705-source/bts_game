@@ -33,7 +33,7 @@
 .upgrade-btn { background:#2d8cff; color:#fff; border:none; border-radius:10px; padding:8px; width:100%; font-size:12px; font-weight:bold; cursor:pointer; }
 .btn { padding:14px; background:#f7931a; color:#1a1a1a; border:none; border-radius:15px; cursor:pointer; font-weight:bold; width:100%; margin:8px 0; }
 .btn:disabled { background:#555; color:#999; cursor:not-allowed; }
-.btn-boost { background:#2d8cff; color:#fff; margin:5px 0 15px; }
+.btn-boost { background:#2d8cff; color:#fff; margin-top:5px; }
 .combo-box { background:#1a1f2e; border:2px solid #f7931a; border-radius:15px; padding:15px; margin:15px 0; }
 .combo-slots { display:flex; gap:10px; justify-content:center; margin:15px 0; }
 .combo-slot { width:80px; height:80px; background:#0a0e1a; border:2px dashed #f7931a50; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:30px; }
@@ -221,3 +221,311 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         return userLevel;
     }
+
+    function renderCards(categoryId, cardsArray) {
+        let html = '';
+        cardsArray.forEach(card => {
+            let level = cards[card.id] || 1;
+            let cost = Math.floor(card.baseCost * Math.pow(1.8, level-1));
+            let profit = Math.floor(card.baseProfit * level);
+            let isSelected = selectedCombo.includes(card.id);
+            html += `
+            <div class="card-item ${isSelected? 'selected' : ''}" data-card="${card.id}">
+                <div class="card-level">Level ${level}</div>
+                <div class="card-icon">${card.icon}</div>
+                <div class="card-title">${card.name}</div>
+                <div class="card-profit">⚡ +${formatNum(profit)} سرعة</div>
+                <button class="upgrade-btn" data-card="${card.id}" data-cost="${cost}" data-profit="${card.baseProfit}">ترقية<br>🪙 ${formatNum(cost)}</button>
+            </div>`;
+        });
+        document.getElementById(categoryId).innerHTML = html;
+    }
+
+    function updateUI() {
+        document.getElementById('coins').innerText = formatNum(coins);
+        document.getElementById('walletCoins').innerText = formatNum(coins);
+        document.getElementById('userLevel').innerText = calculateLevel();
+        let currentPPH = getCurrentPPH();
+        document.getElementById('pph').innerHTML = formatNum(currentPPH) + (boostActive > Date.now() - 10800000? ' <span style="color:#fbbf24;">x2</span>' : '');
+        if(wallet) document.getElementById('walletAddr').innerText = wallet.slice(0,6) + '...' + wallet.slice(-4);
+        updateComboSlots();
+        updateFriendsList();
+        updateBoostTimer();
+        checkTimer();
+    }
+
+    function save() {
+        localStorage.setItem('coins', coins);
+        localStorage.setItem('pph', pph);
+        localStorage.setItem('lastClaim', lastClaim);
+        localStorage.setItem('lastBoost', lastBoost);
+        localStorage.setItem('boostActive', boostActive);
+        localStorage.setItem('wallet', wallet);
+        localStorage.setItem('cards', JSON.stringify(cards));
+        localStorage.setItem('friends', JSON.stringify(friends));
+    }
+
+    setInterval(() => {
+        coins += Math.floor(getCurrentPPH() / 3600);
+        updateUI();
+        save();
+    }, 1000);
+
+    document.getElementById('coinBtn').addEventListener('click', function() {
+        coins += 100;
+        tg.HapticFeedback.impactOccurred('light');
+        updateUI();
+        save();
+    });
+
+    document.body.addEventListener('click', function(e) {
+        if(e.target.classList.contains('upgrade-btn')) {
+            let cardId = e.target.dataset.card;
+            let cost = parseInt(e.target.dataset.cost);
+            let profit = parseInt(e.target.dataset.profit);
+            if(coins >= cost) {
+                coins -= cost;
+                cards[cardId] = (cards[cardId] || 1) + 1;
+                pph += profit;
+                tg.HapticFeedback.notificationOccurred('success');
+                renderCards('rides', ridesCards);
+                renderCards('digs', digsCards);
+                renderCards('shops', shopsCards);
+                updateUI();
+                save();
+            } else {
+                tg.showAlert('رصيدك مش كافي!');
+            }
+        }
+        if(e.target.closest('.card-item') &&!e.target.classList.contains('upgrade-btn')) {
+            let cardId = e.target.closest('.card-item').dataset.card;
+            selectCardForCombo(cardId);
+        }
+    });
+
+    function selectCardForCombo(cardId) {
+        if(selectedCombo.includes(cardId)) {
+            selectedCombo = selectedCombo.filter(id => id!== cardId);
+        } else if(selectedCombo.length < 3) {
+            selectedCombo.push(cardId);
+        }
+        renderCards('rides', ridesCards);
+        renderCards('digs', digsCards);
+        renderCards('shops', shopsCards);
+        updateComboSlots();
+    }
+
+    function updateComboSlots() {
+        let slots = document.querySelectorAll('.combo-slot');
+        slots.forEach((slot, i) => {
+            if(selectedCombo[i]) {
+                let card = allCardsList.find(c => c.id === selectedCombo[i]);
+                slot.innerHTML = card.icon;
+                slot.classList.add('filled');
+            } else {
+                slot.innerHTML = '?';
+                slot.classList.remove('filled');
+            }
+        });
+        document.getElementById('checkComboBtn').disabled = selectedCombo.length!== 3;
+    }
+
+    document.getElementById('checkComboBtn').addEventListener('click', function() {
+        if(selectedCombo.length!== 3) return;
+        let sorted = [...selectedCombo].sort();
+        let correctSorted = [...todayCombo].sort();
+        if(JSON.stringify(sorted) === JSON.stringify(correctSorted)) {
+            coins += 5000000;
+            tg.HapticFeedback.notificationOccurred('success');
+            tg.showAlert('🎉 كومبو صح! +5,000,000 عملة!');
+            localStorage.setItem('comboClaimed', new Date().toDateString());
+        } else {
+            tg.showAlert('❌ كومبو غلط! جرب بكرة');
+        }
+        selectedCombo = [];
+        renderCards('rides', ridesCards);
+        renderCards('digs', digsCards);
+        renderCards('shops', shopsCards);
+        updateComboSlots();
+        updateUI();
+        save();
+    });
+
+    function generateTodayCombo() {
+        let today = new Date().toDateString();
+        if(lastComboDate!== today) {
+            let shuffled = [...allCardsList].sort(() => 0.5 - Math.random());
+            todayCombo = shuffled.slice(0, 3).map(c => c.id);
+            localStorage.setItem('todayCombo', JSON.stringify(todayCombo));
+            localStorage.setItem('lastComboDate', today);
+            lastComboDate = today;
+        } else {
+            todayCombo = JSON.parse(localStorage.getItem('todayCombo') || '[]');
+        }
+        updateComboTimer();
+    }
+
+    function updateComboTimer() {
+        let today = new Date().toDateString();
+        let claimed = localStorage.getItem('comboClaimed');
+        if(claimed === today) {
+            document.getElementById('comboTimer').innerText = 'استلمت المكافأة خلاص! ارجع بكرة';
+            document.getElementById('checkComboBtn').disabled = true;
+        } else {
+            document.getElementById('comboTimer').innerText = 'اختار 3 كروت واضغط تحقق';
+        }
+    }
+
+    document.getElementById('claimBtn').addEventListener('click', function() {
+        let now = Date.now();
+        if(now - lastClaim >= 86400000) {
+            coins += 50000;
+            lastClaim = now;
+            tg.showAlert('تم جمع 50,000!');
+            updateUI();
+            save();
+            checkTimer();
+        }
+    });
+
+    function checkTimer() {
+        let now = Date.now();
+        let diff = 86400000 - (now - lastClaim);
+        if(diff > 0) {
+            let h = Math.floor(diff / 3600000);
+            let m = Math.floor((diff % 3600000) / 60000);
+            document.getElementById('timer').innerText = `المكافأة اليومية بعد: ${h}س ${m}د`;
+            document.getElementById('claimBtn').disabled = true;
+        } else {
+            document.getElementById('timer').innerText = 'المكافأة اليومية جاهزة!';
+            document.getElementById('claimBtn').disabled = false;
+        }
+    }
+    setInterval(checkTimer, 60000);
+
+    document.getElementById('boostBtn').addEventListener('click', function() {
+        let now = Date.now();
+        if(now - lastBoost >= 10800000) {
+            tg.showConfirm('هتشوف إعلان 30 ثانية وتاخد x2 تعدين لمدة 3 ساعات + 50K فوري؟', (ok) => {
+                if(ok) {
+                    coins += 50000;
+                    lastBoost = now;
+                    boostActive = now;
+                    tg.showAlert('🔥 تم تفعيل التعدين السريع x2 لمدة 3 ساعات!');
+                    updateUI();
+                    save();
+                }
+            });
+        } else {
+            tg.showAlert('البوست شغال! استنى المدة تخلص');
+        }
+    });
+
+    function updateBoostTimer() {
+        let now = Date.now();
+        let diff = 10800000 - (now - lastBoost);
+        if(diff > 0) {
+            let h = Math.floor(diff / 3600000);
+            let m = Math.floor((diff % 3600000) / 60000);
+            document.getElementById('boostTimer').innerText = `بوست التعدين متاح بعد: ${h}س ${m}د`;
+            document.getElementById('boostBtn').disabled = true;
+        } else {
+            document.getElementById('boostTimer').innerText = 'التعدين السريع x2 جاهز!';
+            document.getElementById('boostBtn').disabled = false;
+        }
+    }
+    setInterval(updateBoostTimer, 60000);
+
+    document.getElementById('adBtn').addEventListener('click', function() {
+        tg.showConfirm('هتفرج على إعلان 30 ثانية؟', (ok) => {
+            if(ok) {
+                coins += 50000;
+                tg.showAlert('+50,000 عملة!');
+                updateUI();
+                save();
+            }
+        });
+    });
+
+    function handleReferral() {
+        let startParam = tg.initDataUnsafe.start_param;
+        if(startParam && startParam!== tg.initDataUnsafe.user?.id.toString()) {
+            let refId = startParam;
+            if(!friends.includes(refId)) {
+                friends.push(refId);
+                coins += 100000;
+                tg.showAlert('🎉 صديق انضم! +100,000 عملة');
+                save();
+            }
+        }
+    }
+
+    function generateRefLink() {
+        let userId = tg.initDataUnsafe.user?.id || '123456';
+        let link = `https://t.me/BTS_sr_bot?start=${userId}`;
+        document.getElementById('refLink').innerText = link;
+        return link;
+    }
+
+    document.getElementById('copyBtn').addEventListener('click', function() {
+        navigator.clipboard.writeText(generateRefLink());
+        tg.showAlert('تم نسخ رابط الدعوة!');
+    });
+
+    document.getElementById('shareBtn').addEventListener('click', function() {
+        let link = generateRefLink();
+        tg.openTelegramLink(`https://t.me/share/url?url=${encodeURIComponent(link)}&text=🔥 انضم لـ BTS Miner وخد 50,000 عملة هدية!`);
+    });
+
+    function updateFriendsList() {
+        document.getElementById('friendCount').innerText = friends.length;
+        if(friends.length === 0) {
+            document.getElementById('friendsList').innerHTML = '<p style="opacity:0.6; font-size:13px;">مفيش أصدقاء لسه. ادعو حد!</p>';
+            return;
+        }
+        let html = '';
+        friends.forEach((friendId, i) => {
+            html += `
+            <div class="friend-item">
+                <div style="display:flex; align-items:center; gap:10px;">
+                    <div class="friend-avatar">${friendId.slice(-2)}</div>
+                    <div style="text-align:right;">
+                        <div style="font-size:13px;">صديق #${i+1}</div>
+                        <div style="font-size:11px; opacity:0.6;">ID: ${friendId}</div>
+                    </div>
+                <div style="color:#4ade80; font-size:12px; font-weight:bold;">+100K</div>
+            </div>`;
+        });
+        document.getElementById('friendsList').innerHTML = html;
+    }
+
+    document.getElementById('mainTabs').addEventListener('click', function(e) {
+        if(e.target.classList.contains('main-tab')) {
+            document.querySelectorAll('.tab-content').forEach(d => d.classList.add('hidden'));
+            document.getElementById(e.target.dataset.tab).classList.remove('hidden');
+            document.querySelectorAll('.main-tab').forEach(t => t.classList.remove('active'));
+            e.target.classList.add('active');
+        }
+    });
+
+    document.getElementById('subTabs').addEventListener('click', function(e) {
+        if(e.target.classList.contains('sub-tab')) {
+            document.querySelectorAll('#rides, #digs, #shops').forEach(d => d.classList.add('hidden'));
+            document.getElementById(e.target.dataset.cat).classList.remove('hidden');
+            document.querySelectorAll('.sub-tab').forEach(t => t.classList.remove('active'));
+            e.target.classList.add('active');
+        }
+    });
+
+    generateTodayCombo();
+    handleReferral();
+    generateRefLink();
+    renderCards('rides', ridesCards);
+    renderCards('digs', digsCards);
+    renderCards('shops', shopsCards);
+    updateUI();
+    updateBoostTimer();
+});
+</script>
+</body>
+            </html>
