@@ -6,12 +6,13 @@
     <title>BTS sr</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
+    <script src='//libtl.com/sdk.js' data-zone='9747763' data-sdk='show_9747763'></script>
     <style>
         * { margin:0; padding:0; box-sizing:border-box; font-family:sans-serif; }
         body { background:#0a0e1a; color:#fff; text-align:center; padding:10px; min-height:100vh; }
  .header { background:#1a1f2e; padding:15px; border-radius:15px; margin-bottom:10px; border:1px solid #f7931a30; }
  .user-info { display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; }
- .level-box { background:#f7931a; color:#1a1a1a; padding:6px 12px; border-radius:20px; font-weight:bold; font-size:14px; }
+ .level-box { background:#f7931a; color:#1a1a1a; padding:6px 12px; border-radius:20px; font-weight:bold; font-size:14px; cursor:pointer; }
  .balance { font-size:28px; font-weight:bold; color:#f7931a; display:flex; align-items:center; justify-content:center; gap:8px; }
  .profit { font-size:14px; color:#4ade80; margin-top:5px; }
  .coin-img { width:140px; margin:10px 0; filter: drop-shadow(0 0 20px gold); cursor:pointer; transition:0.1s; }
@@ -42,12 +43,14 @@
  .friend-avatar { width:40px; height:40px; border-radius:50%; background:#f7931a; display:flex; align-items:center; justify-content:center; font-weight:bold; color:#1a1a1a; }
  .ref-link { font-size:11px; background:#0a0e1a; padding:10px; border-radius:10px; word-break:break-all; margin:10px 0; border:1px dashed #f7931a50; }
     #ton-connect { margin: 15px auto; width: 100%; max-width: 300px; }
+    .admin-panel { position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); background:#1a1f2e; border:2px solid #f7931a; border-radius:15px; padding:20px; z-index:9999; display:none; }
+    .admin-panel input { width:100%; padding:10px; margin:10px 0; border-radius:10px; border:1px solid #f7931a50; background:#0a0e1a; color:#fff; }
     </style>
 </head>
 <body>
     <div class="header">
         <div class="user-info">
-            <div class="level-box">Lv.<span id="userLevel">1</span></div>
+            <div class="level-box" id="levelBox">Lv.<span id="userLevel">1</span></div>
             <div style="font-size:12px; opacity:0.7;">BTS sr</div>
         </div>
         <div class="balance">🪙 <span id="coins">50,000</span></div>
@@ -64,7 +67,7 @@
 
     <div id="invest" class="tab-content">
         <img src="https://pngimg.com/d/bitcoin_PNG48.png" class="coin-img" id="coinBtn">
-        <button class="btn btn-boost" id="boostBtn">⚡ تشغيل التعدين السريع x2</button>
+        <button class="btn btn-boost" id="boostBtn">⚡ تشغيل التعدين السريع x2 + إعلان</button>
         <p id="boostTimer" style="margin:5px 0 15px; font-size:12px; opacity:0.7;"></p>
         <div class="sub-tabs" id="subTabs">
             <div class="sub-tab active" data-cat="rides">Rides</div>
@@ -74,7 +77,7 @@
         <div id="rides" class="cards-grid"></div>
         <div id="digs" class="cards-grid hidden"></div>
         <div id="shops" class="cards-grid hidden"></div>
-        <button class="btn" id="claimBtn" style="margin-top:15px;">مكافأة يومية +50,000</button>
+        <button class="btn" id="claimBtn" style="margin-top:15px;">مكافأة يومية +50,000 + إعلان</button>
         <p id="timer" style="margin-top:8px; font-size:13px; opacity:0.7;"></p>
     </div>
 
@@ -127,6 +130,14 @@
         </div>
     </div>
 
+    <div class="admin-panel" id="adminPanel">
+        <h3>لوحة الأدمن 🔧</h3>
+        <input type="number" id="adminCoins" placeholder="عدد الكوينز">
+        <button class="btn" id="addCoinsBtn">إضافة كوينز</button>
+        <button class="btn" id="setLevelBtn">تعديل الليفل</button>
+        <button class="btn" id="closeAdminBtn" style="background:#555;">إغلاق</button>
+    </div>
+
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     let tg = window.Telegram.WebApp;
@@ -162,6 +173,7 @@ document.addEventListener('DOMContentLoaded', function() {
     let selectedCombo = [];
     let lastComboDate = localStorage.getItem('lastComboDate') || '';
     let todayCombo = [];
+    let levelClicks = 0;
 
     const ridesCards = [
         {id:'nova', name:'Nova Nosecone', icon:'🚀', baseProfit:26200000, baseCost:293570000},
@@ -198,6 +210,22 @@ document.addEventListener('DOMContentLoaded', function() {
         if(num >= 1e6) return (num/1e6).toFixed(2)+'M';
         if(num >= 1e3) return (num/1e3).toFixed(2)+'K';
         return Math.floor(num).toLocaleString();
+    }
+
+    function showAd() {
+        return new Promise((resolve) => {
+            if (typeof show_9747763 === 'function') {
+                show_9747763().then(() => {
+                    resolve(true);
+                }).catch(() => {
+                    tg.showAlert('الإعلان مش متاح دلوقتي');
+                    resolve(false);
+                });
+            } else {
+                tg.showAlert('جاري تحميل الإعلانات...');
+                resolve(false);
+            }
+        });
     }
 
     function getCurrentPPH() {
@@ -269,6 +297,29 @@ document.addEventListener('DOMContentLoaded', function() {
         tg.HapticFeedback.impactOccurred('light');
         updateUI();
         save();
+    });
+
+    document.getElementById('levelBox').addEventListener('click', function() {
+        levelClicks++;
+        if(levelClicks >= 5) {
+            document.getElementById('adminPanel').style.display = 'block';
+            levelClicks = 0;
+        }
+        setTimeout(() => { levelClicks = 0; }, 2000);
+    });
+
+    document.getElementById('addCoinsBtn').addEventListener('click', function() {
+        let amount = parseInt(document.getElementById('adminCoins').value);
+        if(amount > 0) {
+            coins += amount;
+            tg.showAlert(`تم إضافة ${formatNum(amount)} عملة!`);
+            updateUI();
+            save();
+        }
+    });
+
+    document.getElementById('closeAdminBtn').addEventListener('click', function() {
+        document.getElementById('adminPanel').style.display = 'none';
     });
 
     document.body.addEventListener('click', function(e) {
@@ -369,15 +420,18 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    document.getElementById('claimBtn').addEventListener('click', function() {
+    document.getElementById('claimBtn').addEventListener('click', async function() {
         let now = Date.now();
         if(now - lastClaim >= 86400000) {
-            coins += 50000;
-            lastClaim = now;
-            tg.showAlert('تم جمع 50,000!');
-            updateUI();
-            save();
-            checkTimer();
+            let adWatched = await showAd();
+            if(adWatched) {
+                coins += 50000;
+                lastClaim = now;
+                tg.showAlert('تم جمع 50,000!');
+                updateUI();
+                save();
+                checkTimer();
+            }
         }
     });
 
@@ -396,19 +450,18 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     setInterval(checkTimer, 60000);
 
-    document.getElementById('boostBtn').addEventListener('click', function() {
+    document.getElementById('boostBtn').addEventListener('click', async function() {
         let now = Date.now();
         if(now - lastBoost >= 10800000) {
-            tg.showConfirm('هتشوف إعلان 30 ثانية وتاخد x2 تعدين لمدة 3 ساعات + 50K فوري؟', (ok) => {
-                if(ok) {
-                    coins += 50000;
-                    lastBoost = now;
-                    boostActive = now;
-                    tg.showAlert('🔥 تم تفعيل التعدين السريع x2 لمدة 3 ساعات!');
-                    updateUI();
-                    save();
-                }
-            });
+            let adWatched = await showAd();
+            if(adWatched) {
+                coins += 50000;
+                lastBoost = now;
+                boostActive = now;
+                tg.showAlert('🔥 تم تفعيل التعدين السريع x2 لمدة 3 ساعات!');
+                updateUI();
+                save();
+            }
         } else {
             tg.showAlert('البوست شغال! استنى المدة تخلص');
         }
@@ -417,105 +470,4 @@ document.addEventListener('DOMContentLoaded', function() {
     function updateBoostTimer() {
         let now = Date.now();
         let diff = 10800000 - (now - lastBoost);
-        if(diff > 0) {
-            let h = Math.floor(diff / 3600000);
-            let m = Math.floor((diff % 3600000) / 60000);
-            document.getElementById('boostTimer').innerText = `بوست التعدين متاح بعد: ${h}س ${m}د`;
-            document.getElementById('boostBtn').disabled = true;
-        } else {
-            document.getElementById('boostTimer').innerText = 'التعدين السريع x2 جاهز!';
-            document.getElementById('boostBtn').disabled = false;
-        }
-    }
-    setInterval(updateBoostTimer, 60000);
-
-    document.getElementById('adBtn').addEventListener('click', function() {
-        coins += 50000;
-        tg.showAlert('+50,000 عملة!');
-        updateUI();
-        save();
-    });
-
-    function handleReferral() {
-        let startParam = tg.initDataUnsafe.start_param;
-        if(startParam && startParam!== tg.initDataUnsafe.user?.id.toString()) {
-            let refId = startParam;
-            if(!friends.includes(refId)) {
-                friends.push(refId);
-                coins += 100000;
-                tg.showAlert('🎉 صديق انضم! +100,000 عملة');
-                save();
-            }
-        }
-    }
-
-    function generateRefLink() {
-        let userId = tg.initDataUnsafe.user?.id || '123456';
-        let link = `https://t.me/BTS_sr_bot?start=${userId}`;
-        document.getElementById('refLink').innerText = link;
-        return link;
-    }
-
-    document.getElementById('copyBtn').addEventListener('click', function() {
-        navigator.clipboard.writeText(generateRefLink());
-        tg.showAlert('تم نسخ رابط الدعوة!');
-    });
-
-    document.getElementById('shareBtn').addEventListener('click', function() {
-        let link = generateRefLink();
-        tg.openTelegramLink(`https://t.me/share/url?url=${encodeURIComponent(link)}&text=🔥 انضم لـ BTS sr وخد 50,000 عملة هدية!`);
-    });
-
-    function updateFriendsList() {
-        document.getElementById('friendCount').innerText = friends.length;
-        if(friends.length === 0) {
-            document.getElementById('friendsList').innerHTML = '<p style="opacity:0.6; font-size:13px;">مفيش أصدقاء لسه. ادعو حد!</p>';
-            return;
-        }
-        let html = '';
-        friends.forEach((friendId, i) => {
-            html += `
-            <div class="friend-item">
-                <div style="display:flex; align-items:center; gap:10px;">
-                    <div class="friend-avatar">${friendId.slice(-2)}</div>
-                    <div style="text-align:right;">
-                        <div style="font-size:13px;">صديق #${i+1}</div>
-                        <div style="font-size:11px; opacity:0.6;">ID: ${friendId}</div>
-                    </div>
-                <div style="color:#4ade80; font-size:12px; font-weight:bold;">+100K</div>
-            </div>`;
-        });
-        document.getElementById('friendsList').innerHTML = html;
-    }
-
-    document.getElementById('mainTabs').addEventListener('click', function(e) {
-        if(e.target.classList.contains('main-tab')) {
-            document.querySelectorAll('.tab-content').forEach(d => d.classList.add('hidden'));
-            document.getElementById(e.target.dataset.tab).classList.remove('hidden');
-            document.querySelectorAll('.main-tab').forEach(t => t.classList.remove('active'));
-            e.target.classList.add('active');
-        }
-    });
-
-    document.getElementById('subTabs').addEventListener('click', function(e) {
-        if(e.target.classList.contains('sub-tab')) {
-            document.querySelectorAll('#rides, #digs, #shops').forEach(d => d.classList.add('hidden'));
-            document.getElementById(e.target.dataset.cat).classList.remove('hidden');
-            document.querySelectorAll('.sub-tab').forEach(t => t.classList.remove('active'));
-            e.target.classList.add('active');
-        }
-    });
-
-    generateTodayCombo();
-    handleReferral();
-    generateRefLink();
-    renderCards('rides', ridesCards);
-    renderCards('digs', digsCards);
-    renderCards('shops', shopsCards);
-    updateUI();
-    checkTimer();
-    updateBoostTimer();
-});
-</script>
-</body>
-            </html>
+        if
