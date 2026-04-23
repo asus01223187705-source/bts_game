@@ -1,30 +1,25 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BTS Miner</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <style>
-        * { margin:0; padding:0; box-sizing:border-box; font-family:sans-serif; }
-        body { background:#0a0e1a; color:#fff; text-align:center; padding:10px; min-height:100vh; }
-       .header { background:#1a1f2e; padding:15px; border-radius:15px; margin-bottom:10px; border:1px solid #f7931a30; }
-       .balance { font-size:28px; font-weight:bold; color:#f7931a; display:flex; align-items:center; justify-content:center; gap:8px; }
-       .profit { font-size:14px; color:#4ade80; margin-top:5px; }
-       .coin-img { width:140px; margin:10px 0; filter: drop-shadow(0 0 20px gold); cursor:pointer; transition:0.1s; }
-       .coin-img:active { transform:scale(0.92); }
-       .main-tabs { display:flex; gap:6px; margin:15px 0; overflow-x:auto; }
-       .main-tab { flex:1; padding:12px 5px; background:#1a1f2e; border-radius:12px; cursor:pointer; font-size:13px; border:1px solid #ffffff10; white-space:nowrap; }
-       .main-tab.active { background:#f7931a; color:#1a1a1a; font-weight:bold; }
-       .sub-tabs { display:flex; gap:8px; margin:15px 0; background:#1a1f2e; padding:5px; border-radius:12px; }
-       .sub-tab { flex:1; padding:10px; border-radius:8px; cursor:pointer; font-size:13px; }
-       .sub-tab.active { background:#f7931a; color:#1a1a1a; font-weight:bold; }
-       .hidden { display:none; }
-       .cards-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:10px; }
-       .card-item { background:#1a1f2e; border:1px solid #f7931a20; border-radius:15px; padding:10px; text-align:center; position:relative; }
-       .card-icon { width:100%; border-radius:10px; height:90px; background:linear-gradient(135deg, #f7931a, #ffb347); display:flex; align-items:center; justify-content:center; font-size:40px; margin-bottom:8px; }
-       .card-level { position:absolute; top:15px; left:50%; transform:translateX(-50%); background:#000cc; padding:3px 10px; border-radius:10px; font-size:11px; font-weight:bold; }
-       .card-title { font-size:13px; font-weight:bold; margin:5px 0; height:32px; }
-       .card-profit { font-size:13px; color:#f7931a; display:flex; align-items:center; justify-content:center; gap:4px; margin:8px 0; }
-       .upgrade-btn { background:#2d8cff; color:#fff; border:none; border-radius:10px; padding:8px; width:100%; font-size:12px; font-weight:bold; cursor:pointer; }
-       .btn { padding:14px; background
+</head>
+<body style="background:#000;color:#f7931a;text-align:center;padding:50px;font-family:sans-serif;">
+    <h1>BTS Miner شغال ✅</h1>
+    <h2 id="coins">50,000</h2>
+    <button onclick="add()" style="padding:20px;background:#f7931a;color:#000;border:none;border-radius:10px;width:100%;font-size:20px;margin-top:20px;">اضغط +100</button>
+    
+    <script>
+        let tg = window.Telegram.WebApp;
+        tg.ready();
+        tg.expand();
+        let coins = 50000;
+        function add() {
+            coins += 100;
+            document.getElementById('coins').innerText = coins;
+            tg.HapticFeedback.impactOccurred('light');
+        }
+    </script>
+</body>
+</html>
