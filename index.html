@@ -6,7 +6,7 @@
     <title>BTS sr</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
-    <!-- ⚠️ غير 9747763 بالـ Zone ID بتاعك من Monetag -->
+    <!-- ⚠️ مهم جداً: غير 9747763 بالـ Zone ID بتاعك من Monetag -->
     <script src='//libtl.com/sdk.js' data-zone='9747763' data-sdk='show_9747763'></script>
     <style>
         * { margin:0; padding:0; box-sizing:border-box; font-family:sans-serif; }
@@ -43,56 +43,11 @@
  .friend-item { background:#1a1f2e; padding:12px; border-radius:12px; margin:8px 0; display:flex; align-items:center; justify-content:space-between; border:1px solid #f7931a20; }
  .friend-avatar { width:40px; height:40px; border-radius:50%; background:#f7931a; display:flex; align-items:center; justify-content:center; font-weight:bold; color:#1a1a1a; }
  .ref-link { font-size:11px; background:#0a0e1a; padding:10px; border-radius:10px; word-break:break-all; margin:10px 0; border:1px dashed #f7931a50; }
+ .monetag-stats { background:#1a1f2e; padding:10px; border-radius:12px; margin:10px 0; border:1px solid #4ade8040; font-size:12px; }
  #ton-connect { margin: 15px auto; width: 100%; max-width: 300px; }
- .ad-stats { background:#1a1f2e; padding:8px; border-radius:10px; margin:10px 0; font-size:12px; border:1px solid #4ade8040; }
     </style>
 </head>
 <body>
     <div class="header">
         <div class="user-info">
-            <div class="level-box">Lv.<span id="userLevel">1</span></div>
-            <div style="font-size:12px; opacity:0.7;">BTS sr</div>
-        </div>
-        <div class="balance">🪙 <span id="coins">50,000</span></div>
-        <div class="profit">⚡ سرعة التعدين: <span id="pph">0</span> / ساعة</div>
-    </div>
-
-    <div class="ad-stats">
-        📊 إعلانات اليوم: <span id="adsToday">0</span> | أرباحك في Monetag
-    </div>
-
-    <div class="main-tabs" id="mainTabs">
-        <div class="main-tab active" data-tab="invest">التعدين</div>
-        <div class="main-tab" data-tab="combo">الكومبو</div>
-        <div class="main-tab" data-tab="friends">الأصدقاء</div>
-        <div class="main-tab" data-tab="tasks">المهام</div>
-        <div class="main-tab" data-tab="wallet">المحفظة</div>
-    </div>
-
-    <div id="invest" class="tab-content">
-        <img src="https://pngimg.com/d/bitcoin_PNG48.png" class="coin-img" id="coinBtn">
-        <button class="btn btn-boost" id="boostBtn">⚡ تشغيل التعدين السريع x2</button>
-        <p id="boostTimer" style="margin:5px 0 15px; font-size:12px; opacity:0.7;"></p>
-        <div class="sub-tabs" id="subTabs">
-            <div class="sub-tab active" data-cat="rides">Rides</div>
-            <div class="sub-tab" data-cat="digs">Digs</div>
-            <div class="sub-tab" data-cat="shops">Shops</div>
-        </div>
-        <div id="rides" class="cards-grid"></div>
-        <div id="digs" class="cards-grid hidden"></div>
-        <div id="shops" class="cards-grid hidden"></div>
-        <button class="btn" id="claimBtn" style="margin-top:15px;">مكافأة يومية +50,000</button>
-        <p id="timer" style="margin-top:8px; font-size:13px; opacity:0.7;"></p>
-    </div>
-
-    <div id="combo" class="tab-content hidden">
-        <div class="combo-box">
-            <h3 style="margin-bottom:10px;">🎯 الكومبو اليومي</h3>
-            <p style="font-size:13px; opacity:0.8;">اختار 3 كروت صح واكسب 5,000,000!</p>
-            <div class="combo-slots" id="comboSlots">
-                <div class="combo-slot">?</div>
-                <div class="combo-slot">?</div>
-                <div class="combo-slot">?</div>
-            </div>
-            <button class="btn" id="checkComboBtn" disabled>تحقق من الكومبو</button>
-            <p id="comboTimer" style="margin-top:10px; font-size:12px; opacity
+            <div class="level-box">Lv.<span id="userLevel">1</span></div
