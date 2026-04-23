@@ -9,38 +9,38 @@
     <style>
         * { margin:0; padding:0; box-sizing:border-box; font-family:sans-serif; }
         body { background:#0a0e1a; color:#fff; text-align:center; padding:10px; min-height:100vh; }
-.header { background:#1a1f2e; padding:15px; border-radius:15px; margin-bottom:10px; border:1px solid #f7931a30; }
-.user-info { display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; }
-.level-box { background:#f7931a; color:#1a1a1a; padding:6px 12px; border-radius:20px; font-weight:bold; font-size:14px; }
-.balance { font-size:28px; font-weight:bold; color:#f7931a; display:flex; align-items:center; justify-content:center; gap:8px; }
-.profit { font-size:14px; color:#4ade80; margin-top:5px; }
-.coin-img { width:140px; margin:10px 0; filter: drop-shadow(0 0 20px gold); cursor:pointer; transition:0.1s; }
-.coin-img:active { transform:scale(0.92); }
-.main-tabs { display:flex; gap:6px; margin:15px 0; overflow-x:auto; }
-.main-tab { flex:1; padding:12px 5px; background:#1a1f2e; border-radius:12px; cursor:pointer; font-size:13px; border:1px solid #ffffff10; white-space:nowrap; }
-.main-tab.active { background:#f7931a; color:#1a1a1a; font-weight:bold; }
-.sub-tabs { display:flex; gap:8px; margin:15px 0; background:#1a1f2e; padding:5px; border-radius:12px; }
-.sub-tab { flex:1; padding:10px; border-radius:8px; cursor:pointer; font-size:13px; }
-.sub-tab.active { background:#f7931a; color:#1a1a1a; font-weight:bold; }
-.hidden { display:none; }
-.cards-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:10px; }
-.card-item { background:#1a1f2e; border:1px solid #f7931a20; border-radius:15px; padding:10px; text-align:center; position:relative; cursor:pointer; }
-.card-item.selected { border:3px solid #4ade80; }
-.card-icon { width:100%; border-radius:10px; height:90px; background:linear-gradient(135deg, #f7931a, #ffb347); display:flex; align-items:center; justify-content:center; font-size:40px; margin-bottom:8px; }
-.card-level { position:absolute; top:15px; left:50%; transform:translateX(-50%); background:#000000cc; padding:3px 10px; border-radius:10px; font-size:11px; font-weight:bold; }
-.card-title { font-size:13px; font-weight:bold; margin:5px 0; height:32px; }
-.card-profit { font-size:13px; color:#f7931a; display:flex; align-items:center; justify-content:center; gap:4px; margin:8px 0; }
-.upgrade-btn { background:#2d8cff; color:#fff; border:none; border-radius:10px; padding:8px; width:100%; font-size:12px; font-weight:bold; cursor:pointer; }
-.btn { padding:14px; background:#f7931a; color:#1a1a1a; border:none; border-radius:15px; cursor:pointer; font-weight:bold; width:100%; margin:8px 0; }
-.btn:disabled { background:#555; color:#999; cursor:not-allowed; }
-.btn-boost { background:#2d8cff; color:#fff; margin-top:5px; }
-.combo-box { background:#1a1f2e; border:2px solid #f7931a; border-radius:15px; padding:15px; margin:15px 0; }
-.combo-slots { display:flex; gap:10px; justify-content:center; margin:15px 0; }
-.combo-slot { width:80px; height:80px; background:#0a0e1a; border:2px dashed #f7931a50; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:30px; }
-.combo-slot.filled { border:2px solid #4ade80; background:linear-gradient(135deg, #f7931a, #ffb347); }
-.friend-item { background:#1a1f2e; padding:12px; border-radius:12px; margin:8px 0; display:flex; align-items:center; justify-content:space-between; border:1px solid #f7931a20; }
-.friend-avatar { width:40px; height:40px; border-radius:50%; background:#f7931a; display:flex; align-items:center; justify-content:center; font-weight:bold; color:#1a1a1a; }
-.ref-link { font-size:11px; background:#0a0e1a; padding:10px; border-radius:10px; word-break:break-all; margin:10px 0; border:1px dashed #f7931a50; }
+ .header { background:#1a1f2e; padding:15px; border-radius:15px; margin-bottom:10px; border:1px solid #f7931a30; }
+ .user-info { display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; }
+ .level-box { background:#f7931a; color:#1a1a1a; padding:6px 12px; border-radius:20px; font-weight:bold; font-size:14px; }
+ .balance { font-size:28px; font-weight:bold; color:#f7931a; display:flex; align-items:center; justify-content:center; gap:8px; }
+ .profit { font-size:14px; color:#4ade80; margin-top:5px; }
+ .coin-img { width:140px; margin:10px 0; filter: drop-shadow(0 0 20px gold); cursor:pointer; transition:0.1s; }
+ .coin-img:active { transform:scale(0.92); }
+ .main-tabs { display:flex; gap:6px; margin:15px 0; overflow-x:auto; }
+ .main-tab { flex:1; padding:12px 5px; background:#1a1f2e; border-radius:12px; cursor:pointer; font-size:13px; border:1px solid #ffffff10; white-space:nowrap; }
+ .main-tab.active { background:#f7931a; color:#1a1a1a; font-weight:bold; }
+ .sub-tabs { display:flex; gap:8px; margin:15px 0; background:#1a1f2e; padding:5px; border-radius:12px; }
+ .sub-tab { flex:1; padding:10px; border-radius:8px; cursor:pointer; font-size:13px; }
+ .sub-tab.active { background:#f7931a; color:#1a1a1a; font-weight:bold; }
+ .hidden { display:none; }
+ .cards-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:10px; }
+ .card-item { background:#1a1f2e; border:1px solid #f7931a20; border-radius:15px; padding:10px; text-align:center; position:relative; cursor:pointer; }
+ .card-item.selected { border:3px solid #4ade80; }
+ .card-icon { width:100%; border-radius:10px; height:90px; background:linear-gradient(135deg, #f7931a, #ffb347); display:flex; align-items:center; justify-content:center; font-size:40px; margin-bottom:8px; }
+ .card-level { position:absolute; top:15px; left:50%; transform:translateX(-50%); background:#000000cc; padding:3px 10px; border-radius:10px; font-size:11px; font-weight:bold; }
+ .card-title { font-size:13px; font-weight:bold; margin:5px 0; height:32px; }
+ .card-profit { font-size:13px; color:#f7931a; display:flex; align-items:center; justify-content:center; gap:4px; margin:8px 0; }
+ .upgrade-btn { background:#2d8cff; color:#fff; border:none; border-radius:10px; padding:8px; width:100%; font-size:12px; font-weight:bold; cursor:pointer; }
+ .btn { padding:14px; background:#f7931a; color:#1a1a1a; border:none; border-radius:15px; cursor:pointer; font-weight:bold; width:100%; margin:8px 0; }
+ .btn:disabled { background:#555; color:#999; cursor:not-allowed; }
+ .btn-boost { background:#2d8cff; color:#fff; margin-top:5px; }
+ .combo-box { background:#1a1f2e; border:2px solid #f7931a; border-radius:15px; padding:15px; margin:15px 0; }
+ .combo-slots { display:flex; gap:10px; justify-content:center; margin:15px 0; }
+ .combo-slot { width:80px; height:80px; background:#0a0e1a; border:2px dashed #f7931a50; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:30px; }
+ .combo-slot.filled { border:2px solid #4ade80; background:linear-gradient(135deg, #f7931a, #ffb347); }
+ .friend-item { background:#1a1f2e; padding:12px; border-radius:12px; margin:8px 0; display:flex; align-items:center; justify-content:space-between; border:1px solid #f7931a20; }
+ .friend-avatar { width:40px; height:40px; border-radius:50%; background:#f7931a; display:flex; align-items:center; justify-content:center; font-weight:bold; color:#1a1a1a; }
+ .ref-link { font-size:11px; background:#0a0e1a; padding:10px; border-radius:10px; word-break:break-all; margin:10px 0; border:1px dashed #f7931a50; }
     #ton-connect { margin: 15px auto; width: 100%; max-width: 300px; }
     </style>
 </head>
@@ -170,10 +170,6 @@ document.addEventListener('DOMContentLoaded', function() {
         {id:'classic', name:'Classic Ride', icon:'🏎️', baseProfit:5000000, baseCost:50000000},
         {id:'tesla', name:'Tesla Cyber', icon:'⚡', baseProfit:45000000, baseCost:500000000},
         {id:'lambo', name:'Lambo Moon', icon:'🌙', baseProfit:80000000, baseCost:900000000},
-        {id:'ferrari', name:'Ferrari BTC', icon:'🔥', baseProfit:120000000, baseCost:1300000000},
-        {id:'bugatti', name:'Bugatti ETH', icon:'💎', baseProfit:200000000, baseCost:2200000000},
-        {id:'jet', name:'Private Jet', icon:'✈️', baseProfit:350000000, baseCost:4000000000},
-        {id:'yacht', name:'Crypto Yacht', icon:'🛥️', baseProfit:500000000, baseCost:5500000000},
     ];
 
     const digsCards = [
@@ -183,10 +179,6 @@ document.addEventListener('DOMContentLoaded', function() {
         {id:'pool', name:'Mining Pool', icon:'🌊', baseProfit:60000000, baseCost:600000000},
         {id:'quantum', name:'Quantum Rig', icon:'🔮', baseProfit:150000000, baseCost:1500000000},
         {id:'ai', name:'AI Miner', icon:'🤖', baseProfit:300000000, baseCost:3000000000},
-        {id:'solar', name:'Solar Station', icon:'☀️', baseProfit:450000000, baseCost:5000000000},
-        {id:'nuclear', name:'Nuclear Core', icon:'☢️', baseProfit:800000000, baseCost:9000000000},
-        {id:'fusion', name:'Fusion Reactor', icon:'⚛️', baseProfit:1200000000, baseCost:13000000000},
-        {id:'galaxy', name:'Galaxy Miner', icon:'🌌', baseProfit:2000000000, baseCost:22000000000},
     ];
 
     const shopsCards = [
@@ -196,10 +188,6 @@ document.addEventListener('DOMContentLoaded', function() {
         {id:'meme', name:'Meme Coins', icon:'🐶', baseProfit:15000000, baseCost:150000000},
         {id:'casino', name:'Crypto Casino', icon:'🎰', baseProfit:400000000, baseCost:4000000000},
         {id:'metaverse', name:'Metaverse', icon:'🌐', baseProfit:600000000, baseCost:6000000000},
-        {id:'dex', name:'DEX Platform', icon:'📊', baseProfit:900000000, baseCost:10000000000},
-        {id:'web3', name:'Web3 Hub', icon:'🕸️', baseProfit:1500000000, baseCost:16000000000},
-        {id:'bridge', name:'Cross Bridge', icon:'🌉', baseProfit:2500000000, baseCost:27000000000},
-        {id:'dao', name:'DAO Council', icon:'🏛️', baseProfit:4000000000, baseCost:45000000000},
     ];
 
     const allCardsList = [...ridesCards,...digsCards,...shopsCards];
@@ -494,7 +482,6 @@ document.addEventListener('DOMContentLoaded', function() {
                         <div style="font-size:13px;">صديق #${i+1}</div>
                         <div style="font-size:11px; opacity:0.6;">ID: ${friendId}</div>
                     </div>
-                </div>
                 <div style="color:#4ade80; font-size:12px; font-weight:bold;">+100K</div>
             </div>`;
         });
@@ -531,4 +518,4 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 </body>
-    </html>
+            </html>
