@@ -6,48 +6,79 @@
     <title>BTS sr</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
-    <!-- ⚠️ مهم جداً: غير 9747763 بالـ Zone ID بتاعك من Monetag -->
-    <script src='//libtl.com/sdk.js' data-zone='9747763' data-sdk='show_9747763'></script>
+    <!-- ⚠️ غير 9390450 بالـ Zone ID بتاعك من Monetag -->
+    <script src='//libtl.com/sdk.js' data-zone='9390450' data-sdk='show_9390450'></script>
     <style>
         * { margin:0; padding:0; box-sizing:border-box; font-family:sans-serif; }
         body { background:#0a0e1a; color:#fff; text-align:center; padding:10px; min-height:100vh; }
- .header { background:#1a1f2e; padding:15px; border-radius:15px; margin-bottom:10px; border:1px solid #f7931a30; }
- .user-info { display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; }
- .level-box { background:#f7931a; color:#1a1a1a; padding:6px 12px; border-radius:20px; font-weight:bold; font-size:14px; }
- .balance { font-size:28px; font-weight:bold; color:#f7931a; display:flex; align-items:center; justify-content:center; gap:8px; }
- .profit { font-size:14px; color:#4ade80; margin-top:5px; }
- .coin-img { width:140px; margin:10px 0; filter: drop-shadow(0 0 20px gold); cursor:pointer; transition:0.1s; }
- .coin-img:active { transform:scale(0.92); }
- .main-tabs { display:flex; gap:6px; margin:15px 0; overflow-x:auto; }
- .main-tab { flex:1; padding:12px 5px; background:#1a1f2e; border-radius:12px; cursor:pointer; font-size:13px; border:1px solid #ffffff10; white-space:nowrap; }
- .main-tab.active { background:#f7931a; color:#1a1a1a; font-weight:bold; }
- .sub-tabs { display:flex; gap:8px; margin:15px 0; background:#1a1f2e; padding:5px; border-radius:12px; }
- .sub-tab { flex:1; padding:10px; border-radius:8px; cursor:pointer; font-size:13px; }
- .sub-tab.active { background:#f7931a; color:#1a1a1a; font-weight:bold; }
- .hidden { display:none; }
- .cards-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:10px; }
- .card-item { background:#1a1f2e; border:1px solid #f7931a20; border-radius:15px; padding:10px; text-align:center; position:relative; cursor:pointer; }
- .card-item.selected { border:3px solid #4ade80; }
- .card-icon { width:100%; border-radius:10px; height:90px; background:linear-gradient(135deg, #f7931a, #ffb347); display:flex; align-items:center; justify-content:center; font-size:40px; margin-bottom:8px; }
- .card-level { position:absolute; top:15px; left:50%; transform:translateX(-50%); background:#000000cc; padding:3px 10px; border-radius:10px; font-size:11px; font-weight:bold; }
- .card-title { font-size:13px; font-weight:bold; margin:5px 0; height:32px; }
- .card-profit { font-size:13px; color:#f7931a; display:flex; align-items:center; justify-content:center; gap:4px; margin:8px 0; }
- .upgrade-btn { background:#2d8cff; color:#fff; border:none; border-radius:10px; padding:8px; width:100%; font-size:12px; font-weight:bold; cursor:pointer; }
- .btn { padding:14px; background:#f7931a; color:#1a1a1a; border:none; border-radius:15px; cursor:pointer; font-weight:bold; width:100%; margin:8px 0; }
- .btn:disabled { background:#555; color:#999; cursor:not-allowed; }
- .btn-boost { background:#2d8cff; color:#fff; margin-top:5px; }
- .combo-box { background:#1a1f2e; border:2px solid #f7931a; border-radius:15px; padding:15px; margin:15px 0; }
- .combo-slots { display:flex; gap:10px; justify-content:center; margin:15px 0; }
- .combo-slot { width:80px; height:80px; background:#0a0e1a; border:2px dashed #f7931a50; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:30px; }
- .combo-slot.filled { border:2px solid #4ade80; background:linear-gradient(135deg, #f7931a, #ffb347); }
- .friend-item { background:#1a1f2e; padding:12px; border-radius:12px; margin:8px 0; display:flex; align-items:center; justify-content:space-between; border:1px solid #f7931a20; }
- .friend-avatar { width:40px; height:40px; border-radius:50%; background:#f7931a; display:flex; align-items:center; justify-content:center; font-weight:bold; color:#1a1a1a; }
- .ref-link { font-size:11px; background:#0a0e1a; padding:10px; border-radius:10px; word-break:break-all; margin:10px 0; border:1px dashed #f7931a50; }
- .monetag-stats { background:#1a1f2e; padding:10px; border-radius:12px; margin:10px 0; border:1px solid #4ade8040; font-size:12px; }
- #ton-connect { margin: 15px auto; width: 100%; max-width: 300px; }
+.header { background:#1a1f2e; padding:15px; border-radius:15px; margin-bottom:10px; border:1px solid #f7931a30; }
+.user-info { display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; }
+.level-box { background:#f7931a; color:#1a1a1a; padding:6px 12px; border-radius:20px; font-weight:bold; font-size:14px; }
+.balance { font-size:28px; font-weight:bold; color:#f7931a; display:flex; align-items:center; justify-content:center; gap:8px; }
+.profit { font-size:14px; color:#4ade80; margin-top:5px; }
+.coin-img { width:140px; margin:10px 0; filter: drop-shadow(0 0 20px gold); cursor:pointer; transition:0.1s; }
+.coin-img:active { transform:scale(0.92); }
+.main-tabs { display:flex; gap:6px; margin:15px 0; overflow-x:auto; }
+.main-tab { flex:1; padding:12px 5px; background:#1a1f2e; border-radius:12px; cursor:pointer; font-size:13px; border:1px solid #ffffff10; white-space:nowrap; }
+.main-tab.active { background:#f7931a; color:#1a1a1a; font-weight:bold; }
+.sub-tabs { display:flex; gap:8px; margin:15px 0; background:#1a1f2e; padding:5px; border-radius:12px; }
+.sub-tab { flex:1; padding:10px; border-radius:8px; cursor:pointer; font-size:13px; }
+.sub-tab.active { background:#f7931a; color:#1a1a1a; font-weight:bold; }
+.hidden { display:none; }
+.cards-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:10px; }
+.card-item { background:#1a1f2e; border:1px solid #f7931a20; border-radius:15px; padding:10px; text-align:center; position:relative; cursor:pointer; }
+.card-item.selected { border:3px solid #4ade80; }
+.card-icon { width:100%; border-radius:10px; height:90px; background:linear-gradient(135deg, #f7931a, #ffb347); display:flex; align-items:center; justify-content:center; font-size:40px; margin-bottom:8px; }
+.card-level { position:absolute; top:15px; left:50%; transform:translateX(-50%); background:#000000cc; padding:3px 10px; border-radius:10px; font-size:11px; font-weight:bold; }
+.card-title { font-size:13px; font-weight:bold; margin:5px 0; height:32px; }
+.card-profit { font-size:13px; color:#f7931a; display:flex; align-items:center; justify-content:center; gap:4px; margin:8px 0; }
+.upgrade-btn { background:#2d8cff; color:#fff; border:none; border-radius:10px; padding:8px; width:100%; font-size:12px; font-weight:bold; cursor:pointer; }
+.btn { padding:14px; background:#f7931a; color:#1a1a1a; border:none; border-radius:15px; cursor:pointer; font-weight:bold; width:100%; margin:8px 0; }
+.btn:disabled { background:#555; color:#999; cursor:not-allowed; }
+.btn-boost { background:#2d8cff; color:#fff; margin-top:5px; }
+.combo-box { background:#1a1f2e; border:2px solid #f7931a; border-radius:15px; padding:15px; margin:15px 0; }
+.combo-slots { display:flex; gap:10px; justify-content:center; margin:15px 0; }
+.combo-slot { width:80px; height:80px; background:#0a0e1a; border:2px dashed #f7931a50; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:30px; }
+.combo-slot.filled { border:2px solid #4ade80; background:linear-gradient(135deg, #f7931a, #ffb347); }
+.friend-item { background:#1a1f2e; padding:12px; border-radius:12px; margin:8px 0; display:flex; align-items:center; justify-content:space-between; border:1px solid #f7931a20; }
+.friend-avatar { width:40px; height:40px; border-radius:50%; background:#f7931a; display:flex; align-items:center; justify-content:center; font-weight:bold; color:#1a1a1a; }
+.ref-link { font-size:11px; background:#0a0e1a; padding:10px; border-radius:10px; word-break:break-all; margin:10px 0; border:1px dashed #f7931a50; }
+.monetag-stats { background:#1a1f2e; padding:10px; border-radius:12px; margin:10px 0; border:1px solid #4ade8040; font-size:12px; }
+#ton-connect { margin: 15px auto; width: 100%; max-width: 300px; }
     </style>
 </head>
 <body>
     <div class="header">
         <div class="user-info">
-            <div class="level-box">Lv.<span id="userLevel">1</span></div
+            <div class="level-box">Lv.<span id="userLevel">2</span></div>
+            <div style="font-size:12px; opacity:0.7;">BTS sr</div>
+        </div>
+        <div class="balance">🪙 <span id="coins">254.30K</span></div>
+        <div class="profit">⚡ <span id="pph">3.66K</span> سرعة التعدين / ساعة</div>
+    </div>
+
+    <div class="monetag-stats">
+        📊 Monetag إعلانات اليوم: <span id="adsToday">0</span>
+    </div>
+
+    <div class="main-tabs" id="mainTabs">
+        <div class="main-tab active" data-tab="invest">التعدين</div>
+        <div class="main-tab" data-tab="combo">الكومبو</div>
+        <div class="main-tab" data-tab="friends">الأصدقاء</div>
+        <div class="main-tab" data-tab="tasks">المهام</div>
+        <div class="main-tab" data-tab="wallet">المحفظة</div>
+    </div>
+
+    <div id="invest" class="tab-content">
+        <img src="https://pngimg.com/d/bitcoin_PNG48.png" class="coin-img" id="coinBtn">
+        <button class="btn btn-boost" id="boostBtn">⚡ تشغيل التعدين السريع X2</button>
+        <p id="boostTimer" style="margin:5px 0 15px; font-size:12px; opacity:0.7;">إجاز X2 التعدين السريع</p>
+        <div class="sub-tabs" id="subTabs">
+            <div class="sub-tab active" data-cat="rides">Rides</div>
+            <div class="sub-tab" data-cat="digs">Digs</div>
+            <div class="sub-tab" data-cat="shops">Shops</div>
+        </div>
+        <div id="rides" class="cards-grid"></div>
+        <div id="digs" class="cards-grid hidden"></div>
+        <div id="shops" class="cards-grid hidden"></div>
+        <button class="btn" id="claimBtn" style="margin-top:15px;">مكافأة يومية +50,000</
