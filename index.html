@@ -3,39 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BTS Miner</title>
+    <title>Bitcoin Miner</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         * { margin:0; padding:0; box-sizing:border-box; font-family:sans-serif; }
         body { background:#0a0e1a; color:#fff; text-align:center; padding:10px; min-height:100vh; }
-    .header { background:#1a1f2e; padding:15px; border-radius:15px; margin-bottom:10px; border:1px solid #f7931a30; }
-    .balance { font-size:28px; font-weight:bold; color:#f7931a; display:flex; align-items:center; justify-content:center; gap:8px; }
-    .profit { font-size:14px; color:#4ade80; margin-top:5px; }
-    .coin-img { width:140px; margin:10px 0; filter: drop-shadow(0 0 20px gold); cursor:pointer; transition:0.1s; }
-    .coin-img:active { transform:scale(0.92); }
-    .main-tabs { display:flex; gap:6px; margin:15px 0; overflow-x:auto; }
-    .main-tab { flex:1; padding:12px 5px; background:#1a1f2e; border-radius:12px; cursor:pointer; font-size:13px; border:1px solid #ffffff10; white-space:nowrap; }
-    .main-tab.active { background:#f7931a; color:#1a1a1a; font-weight:bold; }
-    .sub-tabs { display:flex; gap:8px; margin:15px 0; background:#1a1f2e; padding:5px; border-radius:12px; }
-    .sub-tab { flex:1; padding:10px; border-radius:8px; cursor:pointer; font-size:13px; }
-    .sub-tab.active { background:#f7931a; color:#1a1a1a; font-weight:bold; }
-    .hidden { display:none; }
-    .cards-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
-    .card-item { background:#1a1f2e; border:1px solid #f7931a20; border-radius:15px; padding:10px; text-align:center; position:relative; cursor:pointer; }
-    .card-item.selected { border:3px solid #4ade80; }
-    .card-icon { width:100%; border-radius:10px; height:90px; background:linear-gradient(135deg, #f7931a, #ffb347); display:flex; align-items:center; justify-content:center; font-size:40px; margin-bottom:8px; }
-    .card-level { position:absolute; top:15px; left:50%; transform:translateX(-50%); background:#000000cc; padding:3px 10px; border-radius:10px; font-size:11px; font-weight:bold; }
-    .card-title { font-size:13px; font-weight:bold; margin:5px 0; height:32px; }
-    .card-profit { font-size:13px; color:#f7931a; display:flex; align-items:center; justify-content:center; gap:4px; margin:8px 0; }
-    .upgrade-btn { background:#2d8cff; color:#fff; border:none; border-radius:10px; padding:8px; width:100%; font-size:12px; font-weight:bold; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:5px; }
-    .btn { padding:14px; background:#f7931a; color:#1a1a1a; border:none; border-radius:15px; cursor:pointer; font-weight:bold; width:100%; margin:8px 0; }
-    .combo-box { background:#1a1f2e; border:2px solid #f7931a; border-radius:15px; padding:15px; margin:15px 0; }
-    .combo-slots { display:flex; gap:10px; justify-content:center; margin:15px 0; }
-    .combo-slot { width:80px; height:80px; background:#0a0e1a; border:2px dashed #f7931a50; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:30px; }
-    .combo-slot.filled { border:2px solid #4ade80; background:linear-gradient(135deg, #f7931a, #ffb347); }
-    .friend-item { background:#1a1f2e; padding:12px; border-radius:12px; margin:8px 0; display:flex; align-items:center; justify-content:space-between; border:1px solid #f7931a20; }
-    .friend-avatar { width:40px; height:40px; border-radius:50%; background:#f7931a; display:flex; align-items:center; justify-content:center; font-weight:bold; color:#1a1a1a; }
-    .ref-link { font-size:11px; background:#0a0e1a; padding:10px; border-radius:10px; word-break:break-all; margin:10px 0; border:1px dashed #f7931a50; }
+     .header { background:#1a1f2e; padding:15px; border-radius:15px; margin-bottom:10px; border:1px solid #f7931a30; }
+     .balance { font-size:28px; font-weight:bold; color:#f7931a; display:flex; align-items:center; justify-content:center; gap:8px; }
+     .profit { font-size:14px; color:#4ade80; margin-top:5px; }
+     .coin-img { width:140px; margin:10px 0; filter: drop-shadow(0 0 20px gold); cursor:pointer; transition:0.1s; }
+     .coin-img:active { transform:scale(0.92); }
+     .main-tabs { display:flex; gap:6px; margin:15px 0; overflow-x:auto; }
+     .main-tab { flex:1; padding:12px 5px; background:#1a1f2e; border-radius:12px; cursor:pointer; font-size:13px; border:1px solid #ffffff10; white-space:nowrap; }
+     .main-tab.active { background:#f7931a; color:#1a1a1a; font-weight:bold; }
+     .sub-tabs { display:flex; gap:8px; margin:15px 0; background:#1a1f2e; padding:5px; border-radius:12px; }
+     .sub-tab { flex:1; padding:10px; border-radius:8px; cursor:pointer; font-size:13px; }
+     .sub-tab.active { background:#f7931a; color:#1a1a1a; font-weight:bold; }
+     .hidden { display:none; }
+     .cards-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+     .card-item { background:#1a1f2e; border:1px solid #f7931a20; border-radius:15px; padding:10px; text-align:center; position:relative; cursor:pointer; }
+     .card-item.selected { border:3px solid #4ade80; }
+     .card-icon { width:100%; border-radius:10px; height:90px; background:linear-gradient(135deg, #f7931a, #ffb347); display:flex; align-items:center; justify-content:center; font-size:40px; margin-bottom:8px; }
+     .card-level { position:absolute; top:15px; left:50%; transform:translateX(-50%); background:#000000cc; padding:3px 10px; border-radius:10px; font-size:11px; font-weight:bold; }
+     .card-title { font-size:13px; font-weight:bold; margin:5px 0; height:32px; }
+     .card-profit { font-size:13px; color:#f7931a; display:flex; align-items:center; justify-content:center; gap:4px; margin:8px 0; }
+     .upgrade-btn { background:#2d8cff; color:#fff; border:none; border-radius:10px; padding:8px; width:100%; font-size:12px; font-weight:bold; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:5px; }
+     .btn { padding:14px; background:#f7931a; color:#1a1a1a; border:none; border-radius:15px; cursor:pointer; font-weight:bold; width:100%; margin:8px 0; }
+     .combo-box { background:#1a1f2e; border:2px solid #f7931a; border-radius:15px; padding:15px; margin:15px 0; }
+     .combo-slots { display:flex; gap:10px; justify-content:center; margin:15px 0; }
+     .combo-slot { width:80px; height:80px; background:#0a0e1a; border:2px dashed #f7931a50; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:30px; }
+     .combo-slot.filled { border:2px solid #4ade80; background:linear-gradient(135deg, #f7931a, #ffb347); }
+     .friend-item { background:#1a1f2e; padding:12px; border-radius:12px; margin:8px 0; display:flex; align-items:center; justify-content:space-between; border:1px solid #f7931a20; }
+     .friend-avatar { width:40px; height:40px; border-radius:50%; background:#f7931a; display:flex; align-items:center; justify-content:center; font-weight:bold; color:#1a1a1a; }
+     .ref-link { font-size:11px; background:#0a0e1a; padding:10px; border-radius:10px; word-break:break-all; margin:10px 0; border:1px dashed #f7931a50; }
     </style>
 </head>
 <body>
@@ -131,16 +131,16 @@
         let lastComboDate = localStorage.getItem('lastComboDate') || '';
         let todayCombo = [];
 
-        // التعدين الأوفلاين زي هامستر
+        // التعدين الأوفلاين زي هامستر - يحسب كل اللي فاتك
         function claimOfflineMining() {
             let now = Date.now();
-            let timeDiff = now - lastOnline;
-            let hoursDiff = timeDiff / 3600000;
+            let timeDiff = now - lastOnline; // بالميلي ثانية
+            let hoursDiff = timeDiff / 3600000; // نحول لساعات
             if (hoursDiff > 0 && pph > 0) {
                 let offlineCoins = Math.floor(pph * hoursDiff);
                 if (offlineCoins > 0) {
                     coins += offlineCoins;
-                    tg.showAlert('🎉 رجعت! جمعت ' + formatNum(offlineCoins) + ' وانت مش موجود');
+                    tg.showAlert(`🎉 رجعت! جمعت ${formatNum(offlineCoins)} عملة وانت مش موجود`);
                 }
             }
             lastOnline = now;
@@ -185,7 +185,7 @@
 
         function generateRefLink() {
             let userId = tg.initDataUnsafe.user?.id || '123456';
-            let botUsername = tg.initDataUnsafe.user?.username || 'BTS_sr_Bot';
+            let botUsername = 'BTCMinerBot';
             let link = `https://t.me/${botUsername}?start=${userId}`;
             document.getElementById('refLink').innerText = link;
             return link;
@@ -198,7 +198,7 @@
 
         function shareRefLink() {
             let link = generateRefLink();
-            tg.openTelegramLink(`https://t.me/share/url?url=${encodeURIComponent(link)}&text=🔥 انضم لـ BTS Miner وخد 50,000 عملة هدية!`);
+            tg.openTelegramLink(`https://t.me/share/url?url=${encodeURIComponent(link)}&text=🔥 انضم لـ Bitcoin Miner وخد 50,000 عملة هدية!`);
         }
 
         function updateFriendsList() {
@@ -439,7 +439,7 @@
         }
 
         window.onload = function() {
-            claimOfflineMining();
+            claimOfflineMining(); // دي أهم حاجة - بتحسب التعدين اللي فاتك
             generateTodayCombo();
             handleReferral();
             generateRefLink();
@@ -447,4 +447,4 @@
         };
     </script>
 </body>
-            </html>
+    </html>
