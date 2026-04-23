@@ -8,36 +8,34 @@
     <style>
         * { margin:0; padding:0; box-sizing:border-box; font-family:sans-serif; }
         body { background:#0a0e1a; color:#fff; text-align:center; padding:10px; min-height:100vh; }
-     .header { background:#1a1f2e; padding:15px; border-radius:15px; margin-bottom:10px; border:1px solid #f7931a30; }
-     .balance { font-size:28px; font-weight:bold; color:#f7931a; display:flex; align-items:center; justify-content:center; gap:8px; }
-     .profit { font-size:14px; color:#4ade80; margin-top:5px; }
-     .coin-img { width:140px; margin:10px 0; filter: drop-shadow(0 0 20px gold); cursor:pointer; transition:0.1s; }
-     .coin-img:active { transform:scale(0.92); }
-     .main-tabs { display:flex; gap:6px; margin:15px 0; overflow-x:auto; }
-     .main-tab { flex:1; padding:12px 5px; background:#1a1f2e; border-radius:12px; cursor:pointer; font-size:13px; border:1px solid #ffffff10; white-space:nowrap; }
-     .main-tab.active { background:#f7931a; color:#1a1a1a; font-weight:bold; }
-     .sub-tabs { display:flex; gap:8px; margin:15px 0; background:#1a1f2e; padding:5px; border-radius:12px; }
-     .sub-tab { flex:1; padding:10px; border-radius:8px; cursor:pointer; font-size:13px; }
-     .sub-tab.active { background:#f7931a; color:#1a1a1a; font-weight:bold; }
-     .hidden { display:none; }
-     .cards-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
-     .card-item { background:#1a1f2e; border:1px solid #f7931a20; border-radius:15px; padding:10px; text-align:center; position:relative; cursor:pointer; }
-     .card-item.selected { border:3px solid #4ade80; }
-     .card-item img { width:100%; border-radius:10px; height:90px; object-fit:cover; margin-bottom:8px; }
-     .card-level { position:absolute; top:15px; left:50%; transform:translateX(-50%); background:#000000cc; padding:3px 10px; border-radius:10px; font-size:11px; font-weight:bold; }
-     .card-title { font-size:13px; font-weight:bold; margin:5px 0; height:32px; }
-     .card-profit { font-size:13px; color:#f7931a; display:flex; align-items:center; justify-content:center; gap:4px; margin:8px 0; }
-     .upgrade-btn { background:#2d8cff; color:#fff; border:none; border-radius:10px; padding:8px; width:100%; font-size:12px; font-weight:bold; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:5px; }
-     .upgrade-btn:disabled { background:#333; color:#666; }
-     .btn { padding:14px; background:#f7931a; color:#1a1a1a; border:none; border-radius:15px; cursor:pointer; font-weight:bold; width:100%; margin:8px 0; }
-     .combo-box { background:#1a1f2e; border:2px solid #f7931a; border-radius:15px; padding:15px; margin:15px 0; }
-     .combo-slots { display:flex; gap:10px; justify-content:center; margin:15px 0; }
-     .combo-slot { width:80px; height:80px; background:#0a0e1a; border:2px dashed #f7931a50; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:30px; }
-     .combo-slot.filled { border:2px solid #4ade80; }
-     .combo-slot img { width:100%; height:100%; object-fit:cover; border-radius:8px; }
-     .friend-item { background:#1a1f2e; padding:12px; border-radius:12px; margin:8px 0; display:flex; align-items:center; justify-content:space-between; border:1px solid #f7931a20; }
-     .friend-avatar { width:40px; height:40px; border-radius:50%; background:#f7931a; display:flex; align-items:center; justify-content:center; font-weight:bold; color:#1a1a1a; }
-     .ref-link { font-size:11px; background:#0a0e1a; padding:10px; border-radius:10px; word-break:break-all; margin:10px 0; border:1px dashed #f7931a50; }
+       .header { background:#1a1f2e; padding:15px; border-radius:15px; margin-bottom:10px; border:1px solid #f7931a30; }
+       .balance { font-size:28px; font-weight:bold; color:#f7931a; display:flex; align-items:center; justify-content:center; gap:8px; }
+       .profit { font-size:14px; color:#4ade80; margin-top:5px; }
+       .coin-img { width:140px; margin:10px 0; filter: drop-shadow(0 0 20px gold); cursor:pointer; transition:0.1s; }
+       .coin-img:active { transform:scale(0.92); }
+       .main-tabs { display:flex; gap:6px; margin:15px 0; overflow-x:auto; }
+       .main-tab { flex:1; padding:12px 5px; background:#1a1f2e; border-radius:12px; cursor:pointer; font-size:13px; border:1px solid #ffffff10; white-space:nowrap; }
+       .main-tab.active { background:#f7931a; color:#1a1a1a; font-weight:bold; }
+       .sub-tabs { display:flex; gap:8px; margin:15px 0; background:#1a1f2e; padding:5px; border-radius:12px; }
+       .sub-tab { flex:1; padding:10px; border-radius:8px; cursor:pointer; font-size:13px; }
+       .sub-tab.active { background:#f7931a; color:#1a1a1a; font-weight:bold; }
+       .hidden { display:none; }
+       .cards-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+       .card-item { background:#1a1f2e; border:1px solid #f7931a20; border-radius:15px; padding:10px; text-align:center; position:relative; cursor:pointer; }
+       .card-item.selected { border:3px solid #4ade80; }
+       .card-icon { width:100%; border-radius:10px; height:90px; background:linear-gradient(135deg, #f7931a, #ffb347); display:flex; align-items:center; justify-content:center; font-size:40px; margin-bottom:8px; }
+       .card-level { position:absolute; top:15px; left:50%; transform:translateX(-50%); background:#000000cc; padding:3px 10px; border-radius:10px; font-size:11px; font-weight:bold; }
+       .card-title { font-size:13px; font-weight:bold; margin:5px 0; height:32px; }
+       .card-profit { font-size:13px; color:#f7931a; display:flex; align-items:center; justify-content:center; gap:4px; margin:8px 0; }
+       .upgrade-btn { background:#2d8cff; color:#fff; border:none; border-radius:10px; padding:8px; width:100%; font-size:12px; font-weight:bold; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:5px; }
+       .btn { padding:14px; background:#f7931a; color:#1a1a1a; border:none; border-radius:15px; cursor:pointer; font-weight:bold; width:100%; margin:8px 0; }
+       .combo-box { background:#1a1f2e; border:2px solid #f7931a; border-radius:15px; padding:15px; margin:15px 0; }
+       .combo-slots { display:flex; gap:10px; justify-content:center; margin:15px 0; }
+       .combo-slot { width:80px; height:80px; background:#0a0e1a; border:2px dashed #f7931a50; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:30px; }
+       .combo-slot.filled { border:2px solid #4ade80; background:linear-gradient(135deg, #f7931a, #ffb347); }
+       .friend-item { background:#1a1f2e; padding:12px; border-radius:12px; margin:8px 0; display:flex; align-items:center; justify-content:space-between; border:1px solid #f7931a20; }
+       .friend-avatar { width:40px; height:40px; border-radius:50%; background:#f7931a; display:flex; align-items:center; justify-content:center; font-weight:bold; color:#1a1a1a; }
+       .ref-link { font-size:11px; background:#0a0e1a; padding:10px; border-radius:10px; word-break:break-all; margin:10px 0; border:1px dashed #f7931a50; }
     </style>
 </head>
 <body>
@@ -119,6 +117,7 @@
 
     <script>
         let tg = window.Telegram.WebApp;
+        tg.ready();
         tg.expand();
 
         let coins = parseInt(localStorage.getItem('coins')) || 50000;
@@ -132,24 +131,24 @@
         let todayCombo = [];
 
         const ridesCards = [
-            {id:'nova', name:'Nova Nosecone', img:'https://i.imgur.com/8QfXJ3j.png', baseProfit:26200000, baseCost:293570000},
-            {id:'rusty', name:'Rusty Rover', img:'https://i.imgur.com/YQzKq1M.png', baseProfit:732, baseCost:2530},
-            {id:'void', name:'Void Voyager', img:'https://i.imgur.com/kK5oWJm.png', baseProfit:23100000, baseCost:259480000},
-            {id:'classic', name:'Classic Ride', img:'https://i.imgur.com/LQx9Q9r.png', baseProfit:5000000, baseCost:50000000},
+            {id:'nova', name:'Nova Nosecone', icon:'🚀', baseProfit:26200000, baseCost:293570000},
+            {id:'rusty', name:'Rusty Rover', icon:'🚗', baseProfit:732, baseCost:2530},
+            {id:'void', name:'Void Voyager', icon:'🛸', baseProfit:23100000, baseCost:259480000},
+            {id:'classic', name:'Classic Ride', icon:'🏎️', baseProfit:5000000, baseCost:50000000},
         ];
 
         const digsCards = [
-            {id:'gpu', name:'GPU Miner', img:'https://i.imgur.com/4zVqZ9Z.png', baseProfit:500000, baseCost:5000000},
-            {id:'asic', name:'ASIC Pro', img:'https://i.imgur.com/9QfXJ3j.png', baseProfit:2500000, baseCost:25000000},
-            {id:'farm', name:'Mining Farm', img:'https://i.imgur.com/8QfXJ3j.png', baseProfit:12000000, baseCost:120000000},
-            {id:'pool', name:'Mining Pool', img:'https://i.imgur.com/YQzKq1M.png', baseProfit:60000000, baseCost:600000000},
+            {id:'gpu', name:'GPU Miner', icon:'💻', baseProfit:500000, baseCost:5000000},
+            {id:'asic', name:'ASIC Pro', icon:'⚙️', baseProfit:2500000, baseCost:25000000},
+            {id:'farm', name:'Mining Farm', icon:'🏭', baseProfit:12000000, baseCost:120000000},
+            {id:'pool', name:'Mining Pool', icon:'🌊', baseProfit:60000000, baseCost:600000000},
         ];
 
         const shopsCards = [
-            {id:'exchange', name:'Exchange', img:'https://i.imgur.com/kK5oWJm.png', baseProfit:100000000, baseCost:1000000000},
-            {id:'nft', name:'NFT Market', img:'https://i.imgur.com/LQx9Q9r.png', baseProfit:50000000, baseCost:500000000},
-            {id:'defi', name:'DeFi Bank', img:'https://i.imgur.com/4zVqZ9Z.png', baseProfit:250000000, baseCost:2500000000},
-            {id:'meme', name:'Meme Coins', img:'https://i.imgur.com/9QfXJ3j.png', baseProfit:15000000, baseCost:150000000},
+            {id:'exchange', name:'Exchange', icon:'💱', baseProfit:100000000, baseCost:1000000000},
+            {id:'nft', name:'NFT Market', icon:'🖼️', baseProfit:50000000, baseCost:500000000},
+            {id:'defi', name:'DeFi Bank', icon:'🏦', baseProfit:250000000, baseCost:2500000000},
+            {id:'meme', name:'Meme Coins', icon:'🐶', baseProfit:15000000, baseCost:150000000},
         ];
 
         const allCardsList = [...ridesCards,...digsCards,...shopsCards];
@@ -241,7 +240,7 @@
                 html += `
                 <div class="card-item ${isSelected? 'selected' : ''}" onclick="selectCardForCombo('${card.id}')">
                     <div class="card-level">Level ${level}</div>
-                    <img src="${card.img}" onerror="this.src='https://via.placeholder.com/150/f7931a/000?text=BTC'">
+                    <div class="card-icon">${card.icon}</div>
                     <div class="card-title">${card.name}</div>
                     <div class="card-profit">⚡ +${formatNum(profit)} سرعة</div>
                     <button class="upgrade-btn" onclick="event.stopPropagation(); buyCard('${card.id}')">
@@ -249,4 +248,192 @@
                     </button>
                 </div>`;
             });
-           
+            document.getElementById(categoryId).innerHTML = html;
+        }
+
+        function selectCardForCombo(cardId) {
+            if(selectedCombo.includes(cardId)) {
+                selectedCombo = selectedCombo.filter(id => id!== cardId);
+            } else if(selectedCombo.length < 3) {
+                selectedCombo.push(cardId);
+            }
+            updateComboSlots();
+            updateUI();
+        }
+
+        function updateComboSlots() {
+            let slots = document.querySelectorAll('.combo-slot');
+            slots.forEach((slot, i) => {
+                if(selectedCombo[i]) {
+                    let card = allCardsList.find(c => c.id === selectedCombo[i]);
+                    slot.innerHTML = card.icon;
+                    slot.classList.add('filled');
+                } else {
+                    slot.innerHTML = '?';
+                    slot.classList.remove('filled');
+                }
+            });
+            document.getElementById('checkComboBtn').disabled = selectedCombo.length!== 3;
+        }
+
+        function checkCombo() {
+            if(selectedCombo.length!== 3) return;
+            let sorted = [...selectedCombo].sort();
+            let correctSorted = [...todayCombo].sort();
+            if(JSON.stringify(sorted) === JSON.stringify(correctSorted)) {
+                coins += 5000000;
+                tg.HapticFeedback.notificationOccurred('success');
+                tg.showAlert('🎉 كومبو صح! +5,000,000 عملة!');
+                localStorage.setItem('comboClaimed', new Date().toDateString());
+            } else {
+                tg.showAlert('❌ كومبو غلط! جرب بكرة');
+            }
+            selectedCombo = [];
+            updateComboSlots();
+            updateUI();
+            save();
+        }
+
+        function updateComboTimer() {
+            let today = new Date().toDateString();
+            let claimed = localStorage.getItem('comboClaimed');
+            if(claimed === today) {
+                document.getElementById('comboTimer').innerText = 'استلمت المكافأة خلاص! ارجع بكرة';
+                document.getElementById('checkComboBtn').disabled = true;
+            } else {
+                document.getElementById('comboTimer').innerText = 'اختار 3 كروت واضغط تحقق';
+            }
+        }
+
+        function updateUI() {
+            document.getElementById('coins').innerText = formatNum(coins);
+            document.getElementById('walletCoins').innerText = formatNum(coins);
+            document.getElementById('pph').innerText = formatNum(pph);
+            if(wallet) document.getElementById('walletAddr').innerText = wallet;
+            loadCategory('rides', ridesCards);
+            loadCategory('digs', digsCards);
+            loadCategory('shops', shopsCards);
+            updateComboSlots();
+            updateFriendsList();
+        }
+
+        function save() {
+            localStorage.setItem('coins', coins);
+            localStorage.setItem('pph', pph);
+            localStorage.setItem('lastClaim', lastClaim);
+            localStorage.setItem('wallet', wallet);
+            localStorage.setItem('cards', JSON.stringify(cards));
+            localStorage.setItem('friends', JSON.stringify(friends));
+        }
+
+        setInterval(() => {
+            coins += Math.floor(pph / 3600);
+            updateUI();
+            save();
+        }, 1000);
+
+        function tapCoin() {
+            coins += 100;
+            tg.HapticFeedback.impactOccurred('light');
+            updateUI();
+            save();
+        }
+
+        function buyCard(cardId) {
+            let allCards = [...ridesCards,...digsCards,...shopsCards];
+            let card = allCards.find(c => c.id === cardId);
+            let level = cards[cardId] || 1;
+            let cost = Math.floor(card.baseCost * Math.pow(1.8, level-1));
+            if(coins >= cost) {
+                coins -= cost;
+                cards[cardId] = level + 1;
+                pph += card.baseProfit;
+                tg.HapticFeedback.notificationOccurred('success');
+                updateUI();
+                save();
+            } else {
+                tg.showAlert('رصيدك مش كافي!');
+            }
+        }
+
+        function dailyClaim() {
+            let now = Date.now();
+            if(now - lastClaim >= 86400000) {
+                coins += 50000;
+                lastClaim = now;
+                tg.showAlert('تم جمع 50,000!');
+                updateUI();
+                save();
+                checkTimer();
+            }
+        }
+
+        function checkTimer() {
+            let now = Date.now();
+            let diff = 86400000 - (now - lastClaim);
+            if(diff > 0) {
+                let h = Math.floor(diff / 3600000);
+                let m = Math.floor((diff % 3600000) / 60000);
+                document.getElementById('timer').innerText = `متاح بعد: ${h}س ${m}د`;
+                document.getElementById('claimBtn').disabled = true;
+            } else {
+                document.getElementById('timer').innerText = 'المكافأة جاهزة!';
+                document.getElementById('claimBtn').disabled = false;
+            }
+        }
+        setInterval(checkTimer, 60000);
+        checkTimer();
+
+        function watchAd() {
+            tg.showConfirm('هتفرج على إعلان 30 ثانية؟', (ok) => {
+                if(ok) {
+                    coins += 50000;
+                    tg.showAlert('+50,000 عملة!');
+                    updateUI();
+                    save();
+                }
+            });
+        }
+
+        function connectWallet() {
+            tg.showPrompt('حط عنوان محفظة TON', (addr) => {
+                if(addr) {
+                    wallet = addr;
+                    tg.showAlert('تم ربط المحفظة!');
+                    updateUI();
+                    save();
+                }
+            });
+        }
+
+        function withdraw() {
+            if(coins < 1000000) return tg.showAlert('الحد الأدنى مليون');
+            if(!wallet) return tg.showAlert('اربط المحفظة الأول');
+            tg.showConfirm(`تسحب ${formatNum(coins)}؟`, (ok) => {
+                if(ok) tg.showAlert('طلب السحب اتبعت!');
+            });
+        }
+
+        function showMainTab(tab) {
+            document.querySelectorAll('#invest, #combo, #friends, #tasks, #wallet').forEach(d => d.classList.add('hidden'));
+            document.getElementById(tab).classList.remove('hidden');
+            document.querySelectorAll('.main-tab').forEach(t => t.classList.remove('active'));
+            event.target.classList.add('active');
+        }
+
+        function showCategory(cat) {
+            document.querySelectorAll('#rides, #digs, #shops').forEach(d => d.classList.add('hidden'));
+            document.getElementById(cat).classList.remove('hidden');
+            document.querySelectorAll('.sub-tab').forEach(t => t.classList.remove('active'));
+            event.target.classList.add('active');
+        }
+
+        window.onload = function() {
+            generateTodayCombo();
+            handleReferral();
+            generateRefLink();
+            updateUI();
+        };
+    </script>
+</body>
+                                                                          </html>
