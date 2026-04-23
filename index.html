@@ -1,9 +1,129 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BTS Miner</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; font-family:sans-serif; }
+        body { background:#0a0e1a; color:#fff; text-align:center; padding:10px; min-height:100vh; }
+   .header { background:#1a1f2e; padding:15px; border-radius:15px; margin-bottom:10px; border:1px solid #f7931a30; }
+   .balance { font-size:28px; font-weight:bold; color:#f7931a; display:flex; align-items:center; justify-content:center; gap:8px; }
+   .profit { font-size:14px; color:#4ade80; margin-top:5px; }
+   .coin-img { width:140px; margin:10px 0; filter: drop-shadow(0 0 20px gold); cursor:pointer; transition:0.1s; }
+   .coin-img:active { transform:scale(0.92); }
+   .main-tabs { display:flex; gap:6px; margin:15px 0; overflow-x:auto; }
+   .main-tab { flex:1; padding:12px 5px; background:#1a1f2e; border-radius:12px; cursor:pointer; font-size:13px; border:1px solid #ffffff10; white-space:nowrap; }
+   .main-tab.active { background:#f7931a; color:#1a1a1a; font-weight:bold; }
+   .sub-tabs { display:flex; gap:8px; margin:15px 0; background:#1a1f2e; padding:5px; border-radius:12px; }
+   .sub-tab { flex:1; padding:10px; border-radius:8px; cursor:pointer; font-size:13px; }
+   .sub-tab.active { background:#f7931a; color:#1a1a1a; font-weight:bold; }
+   .hidden { display:none; }
+   .cards-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:10px; }
+   .card-item { background:#1a1f2e; border:1px solid #f7931a20; border-radius:15px; padding:10px; text-align:center; position:relative; cursor:pointer; }
+   .card-item.selected { border:3px solid #4ade80; }
+   .card-icon { width:100%; border-radius:10px; height:90px; background:linear-gradient(135deg, #f7931a, #ffb347); display:flex; align-items:center; justify-content:center; font-size:40px; margin-bottom:8px; }
+   .card-level { position:absolute; top:15px; left:50%; transform:translateX(-50%); background:#000000cc; padding:3px 10px; border-radius:10px; font-size:11px; font-weight:bold; }
+   .card-title { font-size:13px; font-weight:bold; margin:5px 0; height:32px; }
+   .card-profit { font-size:13px; color:#f7931a; display:flex; align-items:center; justify-content:center; gap:4px; margin:8px 0; }
+   .upgrade-btn { background:#2d8cff; color:#fff; border:none; border-radius:10px; padding:8px; width:100%; font-size:12px; font-weight:bold; cursor:pointer; }
+   .btn { padding:14px; background:#f7931a; color:#1a1a1a; border:none; border-radius:15px; cursor:pointer; font-weight:bold; width:100%; margin:8px 0; }
+   .combo-box { background:#1a1f2e; border:2px solid #f7931a; border-radius:15px; padding:15px; margin:15px 0; }
+   .combo-slots { display:flex; gap:10px; justify-content:center; margin:15px 0; }
+   .combo-slot { width:80px; height:80px; background:#0a0e1a; border:2px dashed #f7931a50; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:30px; }
+   .combo-slot.filled { border:2px solid #4ade80; background:linear-gradient(135deg, #f7931a, #ffb347); }
+   .friend-item { background:#1a1f2e; padding:12px; border-radius:12px; margin:8px 0; display:flex; align-items:center; justify-content:space-between; border:1px solid #f7931a20; }
+   .friend-avatar { width:40px; height:40px; border-radius:50%; background:#f7931a; display:flex; align-items:center; justify-content:center; font-weight:bold; color:#1a1a1a; }
+   .ref-link { font-size:11px; background:#0a0e1a; padding:10px; border-radius:10px; word-break:break-all; margin:10px 0; border:1px dashed #f7931a50; }
+    #ton-connect { margin: 15px auto; width: 100%; max-width: 300px; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="balance">🪙 <span id="coins">50,000</span></div>
+        <div class="profit">⚡ سرعة التعدين: <span id="pph">0</span> / ساعة</div>
+    </div>
+
+    <div class="main-tabs" id="mainTabs">
+        <div class="main-tab active" data-tab="invest">التعدين</div>
+        <div class="main-tab" data-tab="combo">الكومبو</div>
+        <div class="main-tab" data-tab="friends">الأصدقاء</div>
+        <div class="main-tab" data-tab="tasks">المهام</div>
+        <div class="main-tab" data-tab="wallet">المحفظة</div>
+    </div>
+
+    <div id="invest" class="tab-content">
+        <img src="https://pngimg.com/d/bitcoin_PNG48.png" class="coin-img" id="coinBtn">
+        <div class="sub-tabs" id="subTabs">
+            <div class="sub-tab active" data-cat="rides">Rides</div>
+            <div class="sub-tab" data-cat="digs">Digs</div>
+            <div class="sub-tab" data-cat="shops">Shops</div>
+        </div>
+        <div id="rides" class="cards-grid"></div>
+        <div id="digs" class="cards-grid hidden"></div>
+        <div id="shops" class="cards-grid hidden"></div>
+        <button class="btn" id="claimBtn" style="margin-top:15px;">مكافأة يومية +50,000</button>
+        <p id="timer" style="margin-top:8px; font-size:13px; opacity:0.7;"></p>
+    </div>
+
+    <div id="combo" class="tab-content hidden">
+        <div class="combo-box">
+            <h3 style="margin-bottom:10px;">🎯 الكومبو اليومي</h3>
+            <p style="font-size:13px; opacity:0.8;">اختار 3 كروت صح واكسب 5,000,000!</p>
+            <div class="combo-slots" id="comboSlots">
+                <div class="combo-slot">?</div>
+                <div class="combo-slot">?</div>
+                <div class="combo-slot">?</div>
+            </div>
+            <button class="btn" id="checkComboBtn" disabled>تحقق من الكومبو</button>
+            <p id="comboTimer" style="margin-top:10px; font-size:12px; opacity:0.7;"></p>
+        </div>
+    </div>
+
+    <div id="friends" class="tab-content hidden">
+        <div style="background:#1a1f2e; padding:15px; border-radius:15px; margin:10px 0; border:1px solid #f7931a20;">
+            <h3 style="margin-bottom:10px;">👥 ادعو أصدقائك</h3>
+            <p style="font-size:13px; opacity:0.8; margin-bottom:10px;">انت تاخد 100,000 + صديقك ياخد 50,000</p>
+            <div id="refLink" class="ref-link">جاري التحميل...</div>
+            <button class="btn" id="copyBtn">نسخ رابط الدعوة</button>
+            <button class="btn" id="shareBtn">مشاركة على تليجرام</button>
+        </div>
+        <div style="background:#1a1f2e; padding:15px; border-radius:15px; border:1px solid #f7931a20;">
+            <h4 style="margin-bottom:10px;">أصدقائك (<span id="friendCount">0</span>)</h4>
+            <div id="friendsList">
+                <p style="opacity:0.6; font-size:13px;">مفيش أصدقاء لسه. ادعو حد!</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="tasks" class="tab-content hidden">
+        <h3 style="margin:15px 0;">المهام اليومية 📋</h3>
+        <div style="background:#1a1f2e; padding:15px; border-radius:15px; margin:10px 0; border:1px solid #f7931a20;">
+            <h4>شاهد إعلان</h4>
+            <p style="font-size:13px; opacity:0.8; margin:5px 0;">+50,000 عملة</p>
+            <button class="btn" id="adBtn">شاهد الآن</button>
+        </div>
+    </div>
+
+    <div id="wallet" class="tab-content hidden">
+        <h3 style="margin:15px 0;">محفظتك 💼</h3>
+        <div style="background:#1a1f2e; padding:20px; border-radius:15px; border:1px solid #f7931a20;">
+            <div style="font-size:28px; margin:10px 0; color:#f7931a;"><span id="walletCoins">0</span></div>
+            <div id="ton-connect"></div>
+            <div id="walletAddr" style="font-size:11px; margin-top:10px; opacity:0.7;">لم يتم الربط</div>
+            <p style="font-size:14px; opacity:0.8; margin-top:20px; color:#4ade80;">🎁 التوزيع قريباً</p>
+        </div>
+    </div>
+
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     let tg = window.Telegram.WebApp;
     tg.ready();
     tg.expand();
 
+    // TON Connect - بيدعم OKX, Tonkeeper, MyTonWallet, Tonhub
     const tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
         manifestUrl: 'https://asus0122318.github.io/BTS_sr/tonconnect-manifest.json',
         buttonRootId: 'ton-connect'
@@ -24,8 +144,6 @@ document.addEventListener('DOMContentLoaded', function() {
     let coins = parseInt(localStorage.getItem('coins')) || 50000;
     let pph = parseInt(localStorage.getItem('pph')) || 0;
     let lastClaim = parseInt(localStorage.getItem('lastClaim')) || 0;
-    let lastBoost = parseInt(localStorage.getItem('lastBoost')) || 0;
-    let boostActive = parseInt(localStorage.getItem('boostActive')) || 0;
     let wallet = localStorage.getItem('wallet') || '';
     let cards = JSON.parse(localStorage.getItem('cards')) || {};
     let friends = JSON.parse(localStorage.getItem('friends')) || [];
@@ -64,14 +182,6 @@ document.addEventListener('DOMContentLoaded', function() {
         return Math.floor(num).toLocaleString();
     }
 
-    function getCurrentPPH() {
-        let now = Date.now();
-        if(now - boostActive < 10800000) { // 3 ساعات
-            return pph * 2;
-        }
-        return pph;
-    }
-
     function renderCards(categoryId, cardsArray) {
         let html = '';
         cardsArray.forEach(card => {
@@ -94,27 +204,23 @@ document.addEventListener('DOMContentLoaded', function() {
     function updateUI() {
         document.getElementById('coins').innerText = formatNum(coins);
         document.getElementById('walletCoins').innerText = formatNum(coins);
-        let currentPPH = getCurrentPPH();
-        document.getElementById('pph').innerHTML = formatNum(currentPPH) + (boostActive > Date.now() - 10800000? ' <span style="color:#fbbf24;">x2</span>' : '');
+        document.getElementById('pph').innerText = formatNum(pph);
         if(wallet) document.getElementById('walletAddr').innerText = wallet.slice(0,6) + '...' + wallet.slice(-4);
         updateComboSlots();
         updateFriendsList();
-        updateBoostTimer();
     }
 
     function save() {
         localStorage.setItem('coins', coins);
         localStorage.setItem('pph', pph);
         localStorage.setItem('lastClaim', lastClaim);
-        localStorage.setItem('lastBoost', lastBoost);
-        localStorage.setItem('boostActive', boostActive);
         localStorage.setItem('wallet', wallet);
         localStorage.setItem('cards', JSON.stringify(cards));
         localStorage.setItem('friends', JSON.stringify(friends));
     }
 
     setInterval(() => {
-        coins += Math.floor(getCurrentPPH() / 3600);
+        coins += Math.floor(pph / 3600);
         updateUI();
         save();
     }, 1000);
@@ -224,51 +330,38 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // زرار التعدين السريع كل 3 ساعات
-    document.getElementById('claimBtn').innerText = '⚡ تشغيل التعدين السريع x2';
     document.getElementById('claimBtn').addEventListener('click', function() {
         let now = Date.now();
-        if(now - lastBoost >= 10800000) { // 3 ساعات
-            tg.showConfirm('هتشوف إعلان 30 ثانية وتاخد x2 تعدين لمدة 3 ساعات؟', (ok) => {
-                if(ok) {
-                    // هنا تحط كود الإعلان الحقيقي بعدين
-                    coins += 50000; // مكافأة فورية
-                    lastBoost = now;
-                    boostActive = now;
-                    tg.showAlert('🔥 تم تفعيل التعدين السريع x2 لمدة 3 ساعات!');
-                    updateUI();
-                    save();
-                }
-            });
-        } else {
-            tg.showAlert('لسه شغال! استنى المدة تخلص');
+        if(now - lastClaim >= 86400000) {
+            coins += 50000;
+            lastClaim = now;
+            tg.showAlert('تم جمع 50,000!');
+            updateUI();
+            save();
+            checkTimer();
         }
     });
 
-    function updateBoostTimer() {
+    function checkTimer() {
         let now = Date.now();
-        let diff = 10800000 - (now - lastBoost);
+        let diff = 86400000 - (now - lastClaim);
         if(diff > 0) {
             let h = Math.floor(diff / 3600000);
             let m = Math.floor((diff % 3600000) / 60000);
             document.getElementById('timer').innerText = `متاح بعد: ${h}س ${m}د`;
             document.getElementById('claimBtn').disabled = true;
         } else {
-            document.getElementById('timer').innerText = 'التعدين السريع جاهز!';
+            document.getElementById('timer').innerText = 'المكافأة جاهزة!';
             document.getElementById('claimBtn').disabled = false;
         }
     }
-    setInterval(updateBoostTimer, 60000);
+    setInterval(checkTimer, 60000);
 
     document.getElementById('adBtn').addEventListener('click', function() {
-        tg.showConfirm('هتفرج على إعلان 30 ثانية؟', (ok) => {
-            if(ok) {
-                coins += 50000;
-                tg.showAlert('+50,000 عملة!');
-                updateUI();
-                save();
-            }
-        });
+        coins += 50000;
+        tg.showAlert('+50,000 عملة!');
+        updateUI();
+        save();
     });
 
     function handleReferral() {
@@ -349,6 +442,8 @@ document.addEventListener('DOMContentLoaded', function() {
     renderCards('digs', digsCards);
     renderCards('shops', shopsCards);
     updateUI();
-    updateBoostTimer();
+    checkTimer();
 });
-            </script>
+</script>
+</body>
+        </html>
