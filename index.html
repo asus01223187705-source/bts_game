@@ -6,7 +6,7 @@
     <title>BTS sr</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
-    <!-- ⚠️ التعديل 1: ضفت سكريبت Monetag - غير 9390450 بالـ Zone ID بتاعك -->
+    <!-- ضفت سكريبت Monetag - غير 9390450 بالـ Zone ID بتاعك -->
     <script src='//libtl.com/sdk.js' data-zone='9390450' data-sdk='show_9390450'></script>
     <style>
         * { margin:0; padding:0; box-sizing:border-box; font-family:sans-serif; }
@@ -23,4 +23,146 @@
 .main-tab.active { background:#f7931a; color:#1a1a1a; font-weight:bold; }
 .sub-tabs { display:flex; gap:8px; margin:15px 0; background:#1a1f2e; padding:5px; border-radius:12px; }
 .sub-tab { flex:1; padding:10px; border-radius:8px; cursor:pointer; font-size:13px; }
-.sub-tab.active { background:#f7931a; color:#1a1
+.sub-tab.active { background:#f7931a; color:#1a1a1a; font-weight:bold; }
+.hidden { display:none; }
+.cards-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:10px; }
+.card-item { background:#1a1f2e; border:1px solid #f7931a20; border-radius:15px; padding:10px; text-align:center; position:relative; cursor:pointer; }
+.card-item.selected { border:3px solid #4ade80; }
+.card-icon { width:100%; border-radius:10px; height:90px; background:linear-gradient(135deg, #f7931a, #ffb347); display:flex; align-items:center; justify-content:center; font-size:40px; margin-bottom:8px; }
+.card-level { position:absolute; top:15px; left:50%; transform:translateX(-50%); background:#000000cc; padding:3px 10px; border-radius:10px; font-size:11px; font-weight:bold; }
+.card-title { font-size:13px; font-weight:bold; margin:5px 0; height:32px; }
+.card-profit { font-size:13px; color:#f7931a; display:flex; align-items:center; justify-content:center; gap:4px; margin:8px 0; }
+.upgrade-btn { background:#2d8cff; color:#fff; border:none; border-radius:10px; padding:8px; width:100%; font-size:12px; font-weight:bold; cursor:pointer; }
+.btn { padding:14px; background:#f7931a; color:#1a1a1a; border:none; border-radius:15px; cursor:pointer; font-weight:bold; width:100%; margin:8px 0; }
+.btn:disabled { background:#555; color:#999; cursor:not-allowed; }
+.btn-boost { background:#2d8cff; color:#fff; margin-top:5px; }
+.combo-box { background:#1a1f2e; border:2px solid #f7931a; border-radius:15px; padding:15px; margin:15px 0; }
+.combo-slots { display:flex; gap:10px; justify-content:center; margin:15px 0; }
+.combo-slot { width:80px; height:80px; background:#0a0e1a; border:2px dashed #f7931a50; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:30px; }
+.combo-slot.filled { border:2px solid #4ade80; background:linear-gradient(135deg, #f7931a, #ffb347); }
+.friend-item { background:#1a1f2e; padding:12px; border-radius:12px; margin:8px 0; display:flex; align-items:center; justify-content:space-between; border:1px solid #f7931a20; }
+.friend-avatar { width:40px; height:40px; border-radius:50%; background:#f7931a; display:flex; align-items:center; justify-content:center; font-weight:bold; color:#1a1a1a; }
+.ref-link { font-size:11px; background:#0a0e1a; padding:10px; border-radius:10px; word-break:break-all; margin:10px 0; border:1px dashed #f7931a50; }
+.monetag-stats { background:#1a1f2e; padding:10px; border-radius:12px; margin:10px 0; border:1px solid #4ade8040; font-size:12px; }
+    #ton-connect { margin: 15px auto; width: 100%; max-width: 300px; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="user-info">
+            <div class="level-box">Lv.<span id="userLevel">1</span></div>
+            <div style="font-size:12px; opacity:0.7;">BTS sr</div>
+        </div>
+        <div class="balance">🪙 <span id="coins">50,000</span></div>
+        <div class="profit">⚡ سرعة التعدين: <span id="pph">0</span> / ساعة</div>
+    </div>
+
+    <div class="monetag-stats">
+        📊 Monetag إعلانات اليوم: <span id="adsToday">0</span>
+    </div>
+
+    <div class="main-tabs" id="mainTabs">
+        <div class="main-tab active" data-tab="invest">التعدين</div>
+        <div class="main-tab" data-tab="combo">الكومبو</div>
+        <div class="main-tab" data-tab="friends">الأصدقاء</div>
+        <div class="main-tab" data-tab="tasks">المهام</div>
+        <div class="main-tab" data-tab="wallet">المحفظة</div>
+    </div>
+
+    <div id="invest" class="tab-content">
+        <img src="https://pngimg.com/d/bitcoin_PNG48.png" class="coin-img" id="coinBtn">
+        <button class="btn btn-boost" id="boostBtn">⚡ تشغيل التعدين السريع x2</button>
+        <p id="boostTimer" style="margin:5px 0 15px; font-size:12px; opacity:0.7;"></p>
+        <div class="sub-tabs" id="subTabs">
+            <div class="sub-tab active" data-cat="rides">Rides</div>
+            <div class="sub-tab" data-cat="digs">Digs</div>
+            <div class="sub-tab" data-cat="shops">Shops</div>
+        </div>
+        <div id="rides" class="cards-grid"></div>
+        <div id="digs" class="cards-grid hidden"></div>
+        <div id="shops" class="cards-grid hidden"></div>
+        <button class="btn" id="claimBtn" style="margin-top:15px;">مكافأة يومية +50,000</button>
+        <p id="timer" style="margin-top:8px; font-size:13px; opacity:0.7;"></p>
+    </div>
+
+    <div id="combo" class="tab-content hidden">
+        <div class="combo-box">
+            <h3 style="margin-bottom:10px;">🎯 الكومبو اليومي</h3>
+            <p style="font-size:13px; opacity:0.8;">اختار 3 كروت صح واكسب 5,000,000!</p>
+            <div class="combo-slots" id="comboSlots">
+                <div class="combo-slot">?</div>
+                <div class="combo-slot">?</div>
+                <div class="combo-slot">?</div>
+            </div>
+            <button class="btn" id="checkComboBtn" disabled>تحقق من الكومبو</button>
+            <p id="comboTimer" style="margin-top:10px; font-size:12px; opacity:0.7;"></p>
+        </div>
+    </div>
+
+    <div id="friends" class="tab-content hidden">
+        <div style="background:#1a1f2e; padding:15px; border-radius:15px; margin:10px 0; border:1px solid #f7931a20;">
+            <h3 style="margin-bottom:10px;">👥 ادعو أصدقائك</h3>
+            <p style="font-size:13px; opacity:0.8; margin-bottom:10px;">انت تاخد 100,000 + صديقك ياخد 50,000</p>
+            <div id="refLink" class="ref-link">جاري التحميل...</div>
+            <button class="btn" id="copyBtn">نسخ رابط الدعوة</button>
+            <button class="btn" id="shareBtn">مشاركة على تليجرام</button>
+        </div>
+        <div style="background:#1a1f2e; padding:15px; border-radius:15px; border:1px solid #f7931a20;">
+            <h4 style="margin-bottom:10px;">أصدقائك (<span id="friendCount">0</span>)</h4>
+            <div id="friendsList">
+                <p style="opacity:0.6; font-size:13px;">مفيش أصدقاء لسه. ادعو حد!</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="tasks" class="tab-content hidden">
+        <h3 style="margin:15px 0;">المهام اليومية 📋</h3>
+        <div style="background:#1a1f2e; padding:15px; border-radius:15px; margin:10px 0; border:1px solid #f7931a20;">
+            <h4>شاهد إعلان</h4>
+            <p style="font-size:13px; opacity:0.8; margin:5px 0;">+50,000 عملة</p>
+            <button class="btn" id="adBtn">شاهد الآن</button>
+        </div>
+    </div>
+
+    <div id="wallet" class="tab-content hidden">
+        <h3 style="margin:15px 0;">محفظتك 💼</h3>
+        <div style="background:#1a1f2e; padding:20px; border-radius:15px; border:1px solid #f7931a20;">
+            <div style="font-size:28px; margin:10px 0; color:#f7931a;"><span id="walletCoins">0</span></div>
+            <div id="ton-connect"></div>
+            <div id="walletAddr" style="font-size:11px; margin-top:10px; opacity:0.7;">لم يتم الربط</div>
+            <p style="font-size:14px; opacity:0.8; margin-top:20px; color:#4ade80;">🎁 التوزيع قريباً</p>
+        </div>
+    </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    let tg = window.Telegram.WebApp;
+    tg.ready();
+    tg.expand();
+
+    // غير 9390450 بالـ Zone ID بتاعك من Monetag
+    const AD_ZONE_ID = '9390450';
+
+    const tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
+        manifestUrl: 'https://asus0122318.github.io/BTS_sr/tonconnect-manifest.json',
+        buttonRootId: 'ton-connect'
+    });
+
+    tonConnectUI.onStatusChange(wallet => {
+        if (wallet) {
+            let addr = wallet.account.address;
+            document.getElementById('walletAddr').innerText = addr.slice(0,6) + '...' + addr.slice(-4);
+            localStorage.setItem('wallet', addr);
+            tg.showAlert('تم ربط المحفظة بنجاح!');
+        } else {
+            document.getElementById('walletAddr').innerText = 'لم يتم الربط';
+            localStorage.removeItem('wallet');
+        }
+    });
+
+    let coins = parseInt(localStorage.getItem('coins')) || 50000;
+    let pph = parseInt(localStorage.getItem('pph')) || 0;
+    let lastClaim = parseInt(localStorage.getItem('lastClaim')) || 0;
+    let lastBoost = parseInt(localStorage.getItem('lastBoost')) || 0;
+    let boostActive = parseInt(localStorage.getItem('boostActive')) || 0;
+    let userLevel = parseInt(localStorage.getItem('userLevel')) || 1
