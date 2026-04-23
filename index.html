@@ -6,7 +6,7 @@
     <title>BTS sr</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
-    <!-- ده السطر الوحيد اللي ضفته - غير 9390450 بالـ Zone ID بتاعك -->
+    <!-- 1. ضفت ده - غير 9390450 بالـ Zone ID بتاعك من Monetag -->
     <script src='//libtl.com/sdk.js' data-zone='9390450' data-sdk='show_9390450'></script>
     <style>
         * { margin:0; padding:0; box-sizing:border-box; font-family:sans-serif; }
@@ -57,7 +57,7 @@
         <div class="profit">⚡ سرعة التعدين: <span id="pph">0</span> / ساعة</div>
     </div>
 
-    <!-- عداد الإعلانات الجديد -->
+    <!-- 2. ضفت عداد الإعلانات -->
     <div class="monetag-stats">
         📊 Monetag إعلانات اليوم: <span id="adsToday">0</span>
     </div>
@@ -93,4 +93,41 @@
             <div class="combo-slots" id="comboSlots">
                 <div class="combo-slot">?</div>
                 <div class="combo-slot">?</div>
-               
+                <div class="combo-slot">?</div>
+            </div>
+            <button class="btn" id="checkComboBtn" disabled>تحقق من الكومبو</button>
+            <p id="comboTimer" style="margin-top:10px; font-size:12px; opacity:0.7;"></p>
+        </div>
+    </div>
+
+    <div id="friends" class="tab-content hidden">
+        <div style="background:#1a1f2e; padding:15px; border-radius:15px; margin:10px 0; border:1px solid #f7931a20;">
+            <h3 style="margin-bottom:10px;">👥 ادعو أصدقائك</h3>
+            <p style="font-size:13px; opacity:0.8; margin-bottom:10px;">انت تاخد 100,000 + صديقك ياخد 50,000</p>
+            <div id="refLink" class="ref-link">جاري التحميل...</div>
+            <button class="btn" id="copyBtn">نسخ رابط الدعوة</button>
+            <button class="btn" id="shareBtn">مشاركة على تليجرام</button>
+        </div>
+        <div style="background:#1a1f2e; padding:15px; border-radius:15px; border:1px solid #f7931a20;">
+            <h4 style="margin-bottom:10px;">أصدقائك (<span id="friendCount">0</span>)</h4>
+            <div id="friendsList">
+                <p style="opacity:0.6; font-size:13px;">مفيش أصدقاء لسه. ادعو حد!</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="tasks" class="tab-content hidden">
+        <h3 style="margin:15px 0;">المهام اليومية 📋</h3>
+        <div style="background:#1a1f2e; padding:15px; border-radius:15px; margin:10px 0; border:1px solid #f7931a20;">
+            <h4>شاهد إعلان</h4>
+            <p style="font-size:13px; opacity:0.8; margin:5px 0;">+50,000 عملة</p>
+            <button class="btn" id="adBtn">شاهد الآن</button>
+        </div>
+    </div>
+
+    <div id="wallet" class="tab-content hidden">
+        <h3 style="margin:15px 0;">محفظتك 💼</h3>
+        <div style="background:#1a1f2e; padding:20px; border-radius:15px; border:1px solid #f7931a20;">
+            <div style="font-size:28px; margin:10px 0; color:#f7931a;"><span id="walletCoins">0</span></div>
+            <div id="ton-connect"></div>
+            <div id="walletAddr" style="font-size:11px; margin-top:10px; opacity:0.7;">لم يتم
