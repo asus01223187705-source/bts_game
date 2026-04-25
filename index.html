@@ -3,402 +3,48 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="BTS sr - Crypto Mining Game">
-    <meta name="theme-color" content="#0a0e1a">
-    <link rel="manifest" href="manifest.json">
-    <meta name="apple-mobile-web-app-capable" content="yes">
     <title>BTS sr</title>
-    
-    <!-- External Scripts with defer for better performance -->
-    <script src="https://telegram.org/js/telegram-web-app.js" defer></script>
-    <script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js" defer></script>
-    <script src='//libtl.com/sdk.js' data-zone='10918690' data-sdk='show_10918690' defer></script>
-    
-    <!-- Styles -->
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
+    <!-- التعديل 1: سكريبت Monetag - غير 9390450 بالـ Zone ID بتاعك -->
+    <script src='//libtl.com/sdk.js' data-zone='9390450' data-sdk='show_9390450'></script>
     <style>
-        * { 
-            margin: 0; 
-            padding: 0; 
-            box-sizing: border-box; 
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; 
-        }
-        
-        body { 
-            background: #0a0e1a; 
-            color: #fff; 
-            text-align: center; 
-            padding: 10px; 
-            min-height: 100vh; 
-            -webkit-user-select: none;
-            user-select: none;
-        }
-        
-        .header { 
-            background: #1a1f2e; 
-            padding: 15px; 
-            border-radius: 15px; 
-            margin-bottom: 10px; 
-            border: 1px solid #f7931a30;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-        }
-        
-        .user-info { 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            margin-bottom: 10px; 
-        }
-        
-        .level-box { 
-            background: #f7931a; 
-            color: #1a1a1a; 
-            padding: 6px 12px; 
-            border-radius: 20px; 
-            font-weight: bold; 
-            font-size: 14px;
-            box-shadow: 0 2px 4px rgba(247, 147, 26, 0.3);
-        }
-        
-        .balance { 
-            font-size: 28px; 
-            font-weight: bold; 
-            color: #f7931a; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            gap: 8px;
-        }
-        
-        .profit { 
-            font-size: 14px; 
-            color: #4ade80; 
-            margin-top: 5px; 
-        }
-        
-        .coin-img { 
-            width: 140px; 
-            margin: 10px 0; 
-            filter: drop-shadow(0 0 20px rgba(247, 147, 26, 0.8)); 
-            cursor: pointer; 
-            transition: transform 0.1s ease-out; 
-            user-select: none;
-            -webkit-user-select: none;
-            -webkit-touch-callout: none;
-        }
-        
-        .coin-img:active { 
-            transform: scale(0.92); 
-        }
-        
-        .main-tabs { 
-            display: flex; 
-            gap: 6px; 
-            margin: 15px 0; 
-            overflow-x: auto; 
-            scroll-behavior: smooth;
-            -webkit-overflow-scrolling: touch;
-        }
-        
-        .main-tab { 
-            flex: 1; 
-            padding: 12px 5px; 
-            background: #1a1f2e; 
-            border-radius: 12px; 
-            cursor: pointer; 
-            font-size: 13px; 
-            border: 1px solid #ffffff10; 
-            white-space: nowrap;
-            transition: all 0.3s ease;
-            font-weight: 500;
-        }
-        
-        .main-tab:active {
-            transform: scale(0.95);
-        }
-        
-        .main-tab.active { 
-            background: #f7931a; 
-            color: #1a1a1a; 
-            font-weight: bold;
-            box-shadow: 0 4px 12px rgba(247, 147, 26, 0.4);
-        }
-        
-        .sub-tabs { 
-            display: flex; 
-            gap: 8px; 
-            margin: 15px 0; 
-            background: #1a1f2e; 
-            padding: 5px; 
-            border-radius: 12px;
-            overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
-        }
-        
-        .sub-tab { 
-            flex: 1; 
-            padding: 10px; 
-            border-radius: 8px; 
-            cursor: pointer; 
-            font-size: 13px;
-            transition: all 0.3s ease;
-            white-space: nowrap;
-        }
-        
-        .sub-tab.active { 
-            background: #f7931a; 
-            color: #1a1a1a; 
-            font-weight: bold;
-        }
-        
-        .hidden { 
-            display: none; 
-        }
-        
-        .cards-grid { 
-            display: grid; 
-            grid-template-columns: 1fr 1fr; 
-            gap: 10px; 
-            margin-top: 10px;
-        }
-        
-        @media (max-width: 600px) {
-            .cards-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-        
-        .card-item { 
-            background: #1a1f2e; 
-            border: 2px solid #f7931a20; 
-            border-radius: 15px; 
-            padding: 10px; 
-            text-align: center; 
-            position: relative; 
-            cursor: pointer;
-            transition: all 0.2s ease;
-            user-select: none;
-        }
-        
-        .card-item:active {
-            transform: scale(0.98);
-        }
-        
-        .card-item.selected { 
-            border: 3px solid #4ade80;
-            background: #1a1f2e;
-            box-shadow: 0 0 20px rgba(74, 222, 128, 0.3);
-        }
-        
-        .card-icon { 
-            width: 100%; 
-            border-radius: 10px; 
-            height: 90px; 
-            background: linear-gradient(135deg, #f7931a, #ffb347); 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            font-size: 40px; 
-            margin-bottom: 10px;
-            box-shadow: 0 4px 8px rgba(247, 147, 26, 0.3);
-        }
-        
-        .card-level { 
-            position: absolute; 
-            top: 15px; 
-            left: 50%; 
-            transform: translateX(-50%); 
-            background: #000000dd; 
-            padding: 3px 10px; 
-            border-radius: 10px; 
-            font-size: 11px; 
-            font-weight: bold;
-            border: 1px solid #f7931a;
-        }
-        
-        .card-title { 
-            font-size: 13px; 
-            font-weight: bold; 
-            margin: 5px 0; 
-            height: 32px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-        
-        .card-profit { 
-            font-size: 13px; 
-            color: #f7931a; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            gap: 4px; 
-            margin: 8px 0; 
-        }
-        
-        .upgrade-btn { 
-            background: #2d8cff; 
-            color: #fff; 
-            border: none; 
-            border-radius: 10px; 
-            padding: 8px; 
-            width: 100%; 
-            font-size: 12px; 
-            font-weight: bold; 
-            cursor: pointer;
-            transition: all 0.2s ease;
-            box-shadow: 0 2px 4px rgba(45, 140, 255, 0.3);
-        }
-        
-        .upgrade-btn:active {
-            transform: scale(0.95);
-            box-shadow: 0 0 8px rgba(45, 140, 255, 0.5);
-        }
-        
-        .btn { 
-            padding: 14px; 
-            background: #f7931a; 
-            color: #1a1a1a; 
-            border: none; 
-            border-radius: 15px; 
-            cursor: pointer; 
-            font-weight: bold; 
-            width: 100%; 
-            margin: 8px 0;
-            transition: all 0.2s ease;
-            font-size: 15px;
-            box-shadow: 0 4px 8px rgba(247, 147, 26, 0.3);
-        }
-        
-        .btn:active:not(:disabled) {
-            transform: scale(0.98);
-            box-shadow: 0 2px 4px rgba(247, 147, 26, 0.5);
-        }
-        
-        .btn:disabled { 
-            background: #555; 
-            color: #999; 
-            cursor: not-allowed;
-            opacity: 0.6;
-        }
-        
-        .btn-boost { 
-            background: #2d8cff; 
-            color: #fff;
-            margin-top: 5px;
-            box-shadow: 0 4px 8px rgba(45, 140, 255, 0.3);
-        }
-        
-        .combo-box { 
-            background: #1a1f2e; 
-            border: 2px solid #f7931a; 
-            border-radius: 15px; 
-            padding: 15px; 
-            margin: 15px 0;
-            box-shadow: 0 4px 12px rgba(247, 147, 26, 0.2);
-        }
-        
-        .combo-slots { 
-            display: flex; 
-            gap: 10px; 
-            justify-content: center; 
-            margin: 15px 0; 
-        }
-        
-        .combo-slot { 
-            width: 80px; 
-            height: 80px; 
-            background: #0a0e1a; 
-            border: 2px dashed #f7931a50; 
-            border-radius: 10px; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            font-size: 30px;
-            transition: all 0.3s ease;
-        }
-        
-        .combo-slot.filled { 
-            border: 2px solid #4ade80; 
-            background: linear-gradient(135deg, #f7931a, #ffb347);
-            box-shadow: 0 0 20px rgba(74, 222, 128, 0.4);
-        }
-        
-        .friend-item { 
-            background: #1a1f2e; 
-            padding: 12px; 
-            border-radius: 12px; 
-            margin: 8px 0; 
-            display: flex; 
-            align-items: center; 
-            justify-content: space-between; 
-            border: 1px solid #f7931a20;
-            transition: all 0.2s ease;
-        }
-        
-        .friend-item:active {
-            transform: scale(0.98);
-        }
-        
-        .friend-avatar { 
-            width: 40px; 
-            height: 40px; 
-            border-radius: 50%; 
-            background: #f7931a; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            font-weight: bold; 
-            color: #1a1a1a;
-            box-shadow: 0 2px 6px rgba(247, 147, 26, 0.4);
-        }
-        
-        .ref-link { 
-            font-size: 11px; 
-            background: #0a0e1a; 
-            padding: 10px; 
-            border-radius: 10px; 
-            word-break: break-all; 
-            margin: 10px 0; 
-            border: 1px dashed #f7931a50;
-            font-family: 'Courier New', monospace;
-        }
-        
-        .monetag-stats { 
-            background: #1a1f2e; 
-            padding: 10px; 
-            border-radius: 12px; 
-            margin: 10px 0; 
-            border: 1px solid #4ade8040;
-            font-size: 12px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-        }
-        
-        #ton-connect { 
-            margin: 15px auto; 
-            width: 100%; 
-            max-width: 300px; 
-        }
-        
-        .tab-content {
-            animation: fadeIn 0.3s ease;
-        }
-        
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-            to {
-                opacity: 1;
-            }
-        }
-        
-        h3, h4 {
-            margin-bottom: 10px;
-            font-size: 16px;
-        }
-        
-        p {
-            line-height: 1.4;
-        }
+        * { margin:0; padding:0; box-sizing:border-box; font-family:sans-serif; }
+        body { background:#0a0e1a; color:#fff; text-align:center; padding:10px; min-height:100vh; }
+.header { background:#1a1f2e; padding:15px; border-radius:15px; margin-bottom:10px; border:1px solid #f7931a30; }
+.user-info { display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; }
+.level-box { background:#f7931a; color:#1a1a1a; padding:6px 12px; border-radius:20px; font-weight:bold; font-size:14px; }
+.balance { font-size:28px; font-weight:bold; color:#f7931a; display:flex; align-items:center; justify-content:center; gap:8px; }
+.profit { font-size:14px; color:#4ade80; margin-top:5px; }
+.coin-img { width:140px; margin:10px 0; filter: drop-shadow(0 0 20px gold); cursor:pointer; transition:0.1s; }
+.coin-img:active { transform:scale(0.92); }
+.main-tabs { display:flex; gap:6px; margin:15px 0; overflow-x:auto; }
+.main-tab { flex:1; padding:12px 5px; background:#1a1f2e; border-radius:12px; cursor:pointer; font-size:13px; border:1px solid #ffffff10; white-space:nowrap; }
+.main-tab.active { background:#f7931a; color:#1a1a1a; font-weight:bold; }
+.sub-tabs { display:flex; gap:8px; margin:15px 0; background:#1a1f2e; padding:5px; border-radius:12px; }
+.sub-tab { flex:1; padding:10px; border-radius:8px; cursor:pointer; font-size:13px; }
+.sub-tab.active { background:#f7931a; color:#1a1a1a; font-weight:bold; }
+.hidden { display:none; }
+.cards-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:10px; }
+.card-item { background:#1a1f2e; border:1px solid #f7931a20; border-radius:15px; padding:10px; text-align:center; position:relative; cursor:pointer; }
+.card-item.selected { border:3px solid #4ade80; }
+.card-icon { width:100%; border-radius:10px; height:90px; background:linear-gradient(135deg, #f7931a, #ffb347); display:flex; align-items:center; justify-content:center; font-size:40px; margin-bottom:8px; }
+.card-level { position:absolute; top:15px; left:50%; transform:translateX(-50%); background:#000000cc; padding:3px 10px; border-radius:10px; font-size:11px; font-weight:bold; }
+.card-title { font-size:13px; font-weight:bold; margin:5px 0; height:32px; }
+.card-profit { font-size:13px; color:#f7931a; display:flex; align-items:center; justify-content:center; gap:4px; margin:8px 0; }
+.upgrade-btn { background:#2d8cff; color:#fff; border:none; border-radius:10px; padding:8px; width:100%; font-size:12px; font-weight:bold; cursor:pointer; }
+.btn { padding:14px; background:#f7931a; color:#1a1a1a; border:none; border-radius:15px; cursor:pointer; font-weight:bold; width:100%; margin:8px 0; }
+.btn:disabled { background:#555; color:#999; cursor:not-allowed; }
+.btn-boost { background:#2d8cff; color:#fff; margin-top:5px; }
+.combo-box { background:#1a1f2e; border:2px solid #f7931a; border-radius:15px; padding:15px; margin:15px 0; }
+.combo-slots { display:flex; gap:10px; justify-content:center; margin:15px 0; }
+.combo-slot { width:80px; height:80px; background:#0a0e1a; border:2px dashed #f7931a50; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:30px; }
+.combo-slot.filled { border:2px solid #4ade80; background:linear-gradient(135deg, #f7931a, #ffb347); }
+.friend-item { background:#1a1f2e; padding:12px; border-radius:12px; margin:8px 0; display:flex; align-items:center; justify-content:space-between; border:1px solid #f7931a20; }
+.friend-avatar { width:40px; height:40px; border-radius:50%; background:#f7931a; display:flex; align-items:center; justify-content:center; font-weight:bold; color:#1a1a1a; }
+.ref-link { font-size:11px; background:#0a0e1a; padding:10px; border-radius:10px; word-break:break-all; margin:10px 0; border:1px dashed #f7931a50; }
+.monetag-stats { background:#1a1f2e; padding:10px; border-radius:12px; margin:10px 0; border:1px solid #4ade8040; font-size:12px; }
+    #ton-connect { margin: 15px auto; width: 100%; max-width: 300px; }
     </style>
 </head>
 <body>
@@ -424,7 +70,7 @@
     </div>
 
     <div id="invest" class="tab-content">
-        <img src="https://pngimg.com/d/bitcoin_PNG48.png" class="coin-img" id="coinBtn" alt="Bitcoin">
+        <img src="https://pngimg.com/d/bitcoin_PNG48.png" class="coin-img" id="coinBtn">
         <button class="btn btn-boost" id="boostBtn">⚡ تشغيل التعدين السريع x2</button>
         <p id="boostTimer" style="margin:5px 0 15px; font-size:12px; opacity:0.7;"></p>
         <div class="sub-tabs" id="subTabs">
@@ -494,7 +140,7 @@ document.addEventListener('DOMContentLoaded', function() {
     tg.ready();
     tg.expand();
 
-    const AD_ZONE_ID = '10918690'; // غير ده برقمك
+    const AD_ZONE_ID = '9390450'; // غير ده برقمك
 
     const tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
         manifestUrl: 'https://asus0122318.github.io/BTS_sr/tonconnect-manifest.json',
@@ -529,7 +175,7 @@ document.addEventListener('DOMContentLoaded', function() {
     let lastAdDate = localStorage.getItem('lastAdDate') || '';
 
     let today = new Date().toDateString();
-    if(lastAdDate !== today) {
+    if(lastAdDate!== today) {
         adsToday = 0;
         localStorage.setItem('adsToday', 0);
         localStorage.setItem('lastAdDate', today);
@@ -596,7 +242,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     resolve(false);
                 });
             } else {
-                tg.showAlert('حط الـ Zone ID بتاعك من Monetag: ' + AD_ZONE_ID);
+                tg.showAlert('حط الـ Zone ID بتاعك من Monetag');
                 resolve(false);
             }
         });
@@ -611,7 +257,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function calculateLevel() {
         let totalUpgrades = Object.values(cards).reduce((a,b) => a+b, 0) - Object.keys(cards).length;
         let newLevel = Math.min(30, Math.floor(totalUpgrades / 3) + 1);
-        if(newLevel !== userLevel) {
+        if(newLevel!== userLevel) {
             userLevel = newLevel;
             localStorage.setItem('userLevel', userLevel);
         }
@@ -693,7 +339,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 tg.showAlert('رصيدك مش كافي!');
             }
         }
-        if(e.target.closest('.card-item') && !e.target.classList.contains('upgrade-btn')) {
+        if(e.target.closest('.card-item') &&!e.target.classList.contains('upgrade-btn')) {
             let cardId = e.target.closest('.card-item').dataset.card;
             selectCardForCombo(cardId);
         }
@@ -701,7 +347,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function selectCardForCombo(cardId) {
         if(selectedCombo.includes(cardId)) {
-            selectedCombo = selectedCombo.filter(id => id !== cardId);
+            selectedCombo = selectedCombo.filter(id => id!== cardId);
         } else if(selectedCombo.length < 3) {
             selectedCombo.push(cardId);
         }
@@ -723,11 +369,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 slot.classList.remove('filled');
             }
         });
-        document.getElementById('checkComboBtn').disabled = selectedCombo.length !== 3;
+        document.getElementById('checkComboBtn').disabled = selectedCombo.length!== 3;
     }
 
     document.getElementById('checkComboBtn').addEventListener('click', function() {
-        if(selectedCombo.length !== 3) return;
+        if(selectedCombo.length!== 3) return;
         let sorted = [...selectedCombo].sort();
         let correctSorted = [...todayCombo].sort();
         if(JSON.stringify(sorted) === JSON.stringify(correctSorted)) {
@@ -749,7 +395,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function generateTodayCombo() {
         let today = new Date().toDateString();
-        if(lastComboDate !== today) {
+        if(lastComboDate!== today) {
             let shuffled = [...allCardsList].sort(() => 0.5 - Math.random());
             todayCombo = shuffled.slice(0, 3).map(c => c.id);
             localStorage.setItem('todayCombo', JSON.stringify(todayCombo));
@@ -846,7 +492,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function handleReferral() {
         let startParam = tg.initDataUnsafe.start_param;
-        if(startParam && startParam !== tg.initDataUnsafe.user?.id.toString()) {
+        if(startParam && startParam!== tg.initDataUnsafe.user?.id.toString()) {
             let refId = startParam;
             if(!friends.includes(refId)) {
                 friends.push(refId);
@@ -890,7 +536,6 @@ document.addEventListener('DOMContentLoaded', function() {
                         <div style="font-size:13px;">صديق #${i+1}</div>
                         <div style="font-size:11px; opacity:0.6;">ID: ${friendId}</div>
                     </div>
-                </div>
                 <div style="color:#4ade80; font-size:12px; font-weight:bold;">+100K</div>
             </div>`;
         });
