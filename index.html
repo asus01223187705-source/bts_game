@@ -237,8 +237,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     document.getElementById('adsToday').innerText = adsToday;
                     tg.showAlert('✅ الإعلان خلص');
                     resolve(true);
-                }).catch(() => {
-                    tg.showAlert('الإعلان مش متاح دلوقتي');
+                }).catch(() => 
                     resolve(false);
                 });
             } else {
