@@ -237,7 +237,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     document.getElementById('adsToday').innerText = adsToday;
                     tg.showAlert('✅ الإعلان خلص');
                     resolve(true);
-                }).catch(() => 
+                }).catch(() => {
+                    tg.showAlert('الإعلان مش متاح دلوقتي');
                     resolve(false);
                 });
             } else {
@@ -571,4 +572,4 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 </body>
-                                                                 </html>
+        </html>
