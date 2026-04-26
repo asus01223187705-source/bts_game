@@ -6,8 +6,8 @@
     <title>BTS sr</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
-    <!-- التعديل 1: سكريبت Monetag - غير 9390450 بالـ Zone ID بتاعك -->
-    <script src='//libtl.com/sdk.js' data-zone='9390450' data-sdk='show_9390450'></script>
+    <!-- التعديل 1: سكريبت Monetag - غير 10918690 بالـ Zone ID بتاعك -->
+    <script src='//libtl.com/sdk.js' data-zone='10918690' data-sdk='show_10918690'></script>
     <style>
         * { margin:0; padding:0; box-sizing:border-box; font-family:sans-serif; }
         body { background:#0a0e1a; color:#fff; text-align:center; padding:10px; min-height:100vh; }
@@ -70,7 +70,7 @@
     </div>
 
     <div id="invest" class="tab-content">
-        <img src="./bitcoin.png" class="coin-img" id="coinBtn">
+        <img src="https://pngimg.com/d/bitcoin_PNG48.png" class="coin-img" id="coinBtn">
         <button class="btn btn-boost" id="boostBtn">⚡ تشغيل التعدين السريع x2</button>
         <p id="boostTimer" style="margin:5px 0 15px; font-size:12px; opacity:0.7;"></p>
         <div class="sub-tabs" id="subTabs">
@@ -140,7 +140,7 @@ document.addEventListener('DOMContentLoaded', function() {
     tg.ready();
     tg.expand();
 
-    const AD_ZONE_ID = '9390450'; // غير ده برقمك
+    const AD_ZONE_ID = '10918690'; // غير ده برقمك
 
     const tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
         manifestUrl: 'https://asus0122318.github.io/BTS_sr/tonconnect-manifest.json',
@@ -242,7 +242,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     resolve(false);
                 });
             } else {
-                tg.showAlert('حط الـ Zone ID بتاعك من Monetag');
+                tg.showAlert('10918690حط الـ Zone ID بتاعك من Monetag');
                 resolve(false);
             }
         });
@@ -572,4 +572,4 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 </body>
-            </html
+            </html>
