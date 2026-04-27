@@ -449,22 +449,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     setInterval(checkTimer, 60000);
 
-    document.getElementById('boostBtn').addEventListener('click', async function() {
-        let now = Date.now();
-        if(now - lastBoost >= 10800000) {
-            let adWatched = await showAd();
-            if(adWatched) {
-                coins += 50000;
-                lastBoost = now;
-                boostActive = now;
-                tg.showAlert('🔥 تم تفعيل التعدين السريع x2 لمدة 3 ساعات!');
-                updateUI();
-                save();
-            }
-        } else {
-            tg.showAlert('البوست شغال! استنى المدة تخلص');
-        }
-    });
 
     function updateBoostTimer() {
         let now = Date.now();
