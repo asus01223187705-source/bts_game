@@ -449,6 +449,22 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     setInterval(checkTimer, 60000);
 
+    document.getElementById('boostBtn').addEventListener('click', async function() {
+        let now = Date.now();
+        if(now - lastBoost >= 10800000) {
+            let adWatched = await showAd();
+            if(adWatched) {
+                coins += 50000;
+                lastBoost = now;
+                boostActive = now;
+                tg.showAlert('🔥 تم تفعيل التعدين السريع x2 لمدة 3 ساعات!');
+                updateUI();
+                save();
+            }
+        } else {
+            tg.showAlert('البوست شغال! استنى المدة تخلص');
+        }
+    });
 
     function updateBoostTimer() {
         let now = Date.now();
@@ -564,29 +580,15 @@ document.addEventListener('DOMContentLoaded', function() {
             }, 2000);
         }; 
 
-  // كود إعلان Adsterra لزرار التعدين السريع x2
-document.getElementById('boostBtn').onclick = async function() {
-    let now = Date.now();
-    if(now - lastBoost >= 10800000) {
-        // افتح إعلان Adsterra
-        window.open('https://www.profitablecpmratenetwork.com/g2dzvxyp?key=3a4ac89456212ad80ee7bd91aa3e58bd', '_blank');
-        
-        // استنى ثانيتين وبعدين فعل البوست
-        setTimeout(async () => {
-            let adWatched = await showAd(); // ده إعلان Monetag
-            if(adWatched) {
-                coins += 50000;
-                lastBoost = now;
-                boostActive = now;
-                tg.showAlert('🔥 تم تفعيل التعدين السريع x2 لمدة 3 ساعات!');
-                updateUI();
-                save();
-            }
-        }, 2000);
-    } else {
-        tg.showAlert('البوست شغال! استنى المدة تخلص');
-    }
-};  
+
+        // كود إعلان Adsterra لزرار التعدين السريع x2
+        document.getElementById('boostBtn').onclick = function() {
+            window.open('https://www.profitablecpmratenetwork.com/g2dzvxyp?key=3a4ac89456212ad80ee7bd91aa3e58bd', '_blank');
+            setTimeout(() => {
+                startBoost();
+                alert('تم تفعيل التعدين السريع x2 لمدة ساعة ✅');
+            }, 2000);
+        };
 </script>
   
 
