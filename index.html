@@ -570,41 +570,26 @@ document.addEventListener('DOMContentLoaded', function() {
     updateUI();
     checkTimer();
     updateBoostTimer();
-         // كود إعلان Adsterra لزرار شاهد الآن
+// كود إعلان Adsterra لزرار شاهد الآن
         document.getElementById('adBtn').onclick = function() {
-            window.open('https://www.profitablecpmratenetwork.com/g2dzvxyp?key=3a4ac89456212ad80ee7bd91aa3e58bd', '_blank');
+            window.open('https://www.profitablecpmratenetwork.com/g2dzvxyp?key=3a4ac29176189ad80ee7bd91aa3e58bd', '_blank');
             setTimeout(() => {
                 coins += 50000; 
                 updateUI();
                 alert('تم إضافة 50,000 عملة ✅');
             }, 2000);
-        }; 
-
-  // كود إعلان Adsterra لزرار التعدين السريع x2
-document.getElementById('boostBtn').onclick = async function() {
-    let now = Date.now();
-    if(now - lastBoost >= 10800000) {
-        // افتح إعلان Adsterra
-        window.open('https://www.profitablecpmratenetwork.com/g2dzvxyp?key=3a4ac89456212ad80ee7bd91aa3e58bd', '_blank');
-        
-        // استنى ثانيتين وبعدين فعل البوست
-        setTimeout(async () => {
-            let adWatched = await showAd(); // ده إعلان Monetag
-            if(adWatched) {
-                coins += 50000;
-                lastBoost = now;
-                boostActive = now;
-                tg.showAlert('🔥 تم تفعيل التعدين السريع x2 لمدة 3 ساعات!');
-                updateUI();
-                save();
-            }
-        }, 2000);
-    } else {
-        tg.showAlert('البوست شغال! استنى المدة تخلص');
-    }
-};  
+        };
+// كود إعلان Adsterra لزرار التعدين السريع x2
+        document.getElementById('boostBtn').onclick = function() {
+            window.open('https://www.profitablecpmratenetwork.com/g2dzvxyp?key=3a4ac29176189ad80ee7bd91aa3e58bd', '_blank');
+            setTimeout(() => {
+                startBoost();
+                alert('تم تفعيل التعدين السريع x2 لمدة ساعة ✅');
+            }, 2000);
+        };    
+});    
 </script>
-  
+
 
   <div style="text-align:center; margin:30px 15px; padding:20px; background:#1a1a2e; border-radius:15px;">
     <a href="https://omg10.com/4/10919451" target="_blank" 
@@ -620,6 +605,4 @@ document.getElementById('boostBtn').onclick = async function() {
   </div>
 
 </body>
-</html>
-
-  
+            </html>
