@@ -570,23 +570,73 @@ document.addEventListener('DOMContentLoaded', function() {
     updateUI();
     checkTimer();
     updateBoostTimer();
-// كود إعلان Adsterra لزرار شاهد الآن
-        document.getElementById('adBtn').onclick = function() {
-            window.open('https://www.profitablecpmratenetwork.com/g2dzvxyp?key=3a4ac29176189ad80ee7bd91aa3e58bd', '_blank');
-            setTimeout(() => {
-                coins += 50000; 
-                updateUI();
-                alert('تم إضافة 50,000 عملة ✅');
-            }, 2000);
-        };
-// كود إعلان Adsterra لزرار التعدين السريع x2
-        document.getElementById('boostBtn').onclick = function() {
-            window.open('https://www.profitablecpmratenetwork.com/g2dzvxyp?key=3a4ac29176189ad80ee7bd91aa3e58bd', '_blank');
-            setTimeout(() => {
-                startBoost();
-                alert('تم تفعيل التعدين السريع x2 لمدة ساعة ✅');
-            }, 2000);
-        };    
+// زرار شاهد إعلان - exe.io
+document.getElementById('adBtn').onclick = function() {
+    window.open('https://exe.io/LiyXGcF', '_blank');
+    setTimeout(() => {
+        coins += 50000; 
+        updateUI();
+        save();
+        tg.showAlert('تم إضافة 50,000 عملة ✅');
+    }, 3000);
+};
+
+// زرار التعدين السريع x2 - كل 3 ساعات بالظبط
+document.getElementById('boostBtn').onclick = function() {
+    let now = Date.now();
+    if(now - lastBoost >= 10800000) { // 10800000 = 3 ساعات بالمللي ثانية
+        window.open('https://exe.io/LiyXGcF', '_blank');
+        setTimeout(() => {
+            coins += 100000; // مكافأة فورية
+            lastBoost = now;
+            boostActive = now;
+            tg.showAlert('🔥 تم تفعيل التعدين السريع x2 لمدة 3 ساعات + 100,000 عملة');
+            updateUI();
+            save();
+            updateBoostTimer(); // حدث التايمر فوراً
+        }, 3000);
+    } else {
+        let diff = 10800000 - (now - lastBoost);
+        let h = Math.floor(diff / 3600000);
+        let m = Math.floor((diff % 3600000) / 60000);
+        tg.showAlert(`استنى شوية! متاح بعد: ${h}س ${m}د`);
+    }
+};
+
+// زرار المكافأة اليومية - exe.io 
+document.getElementById('claimBtn').onclick = function() {
+    let now = Date.now();
+    if(now - lastClaim >= 86400000) { // 24 ساعة
+        window.open('https://exe.io/LiyXGcF', '_blank');
+        setTimeout(() => {
+            coins += 50000;
+            lastClaim = now;
+            tg.showAlert('تم جمع 50,000 عملة ✅');
+            updateUI();
+            save();
+            checkTimer();
+        }, 3000);
+    }
+};
+
+// دالة تايمر التعدين السريع - كل 3 ساعات
+function updateBoostTimer() {
+    let now = Date.now();
+    let diff = 10800000 - (now - lastBoost); // 3 ساعات
+    if(diff > 0) {
+        let h = Math.floor(diff / 3600000);
+        let m = Math.floor((diff % 3600000) / 60000);
+        let s = Math.floor((diff % 60000) / 1000);
+        document.getElementById('boostTimer').innerText = `التعدين السريع متاح بعد: ${h}س ${m}د ${s}ث`;
+        document.getElementById('boostBtn').disabled = true;
+    } else {
+        document.getElementById('boostTimer').innerText = 'التعدين السريع x2 جاهز للتشغيل';
+        document.getElementById('boostBtn').disabled = false;
+    }
+}
+
+// شغل التايمر كل ثانية عشان يحدث العد التنازلي
+setInterval(updateBoostTimer, 1000); 
 });    
 </script>
 
